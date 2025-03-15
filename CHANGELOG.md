@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/jake-walker/workout-converter/compare/v1.0.3...v1.1.0) (2025-03-15)
+
+
+### Features
+
+* switch to deno runtime ([a988b14](https://github.com/jake-walker/workout-converter/commit/a988b142afc3f85967b2a9b273e06096cede17ad))
+
 ## [1.0.3](https://github.com/jake-walker/workout-converter/compare/v1.0.1...v1.0.3) (2025-03-15)
 
 
