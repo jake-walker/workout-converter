@@ -1,7 +1,7 @@
 import { describe, test, expect } from "vitest";
-import NextRepAdapter from "./nextrep";
-import { readFileBlob } from "../helpers";
-import { workoutData } from "../schema";
+import NextRepAdapter from "../../src/adapters/nextrep";
+import { readFileBlob } from "../../src/helpers";
+import { workoutData } from "../../src/schema";
 import sampleData from "../../sample_data/converted";
 
 describe("NextRepAdapter", () => {

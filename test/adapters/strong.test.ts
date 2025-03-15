@@ -1,8 +1,8 @@
 import { expect, test, describe } from "vitest";
-import StrongAdapter from "./strong";
-import { readFileBlob } from "../helpers";
+import StrongAdapter from "../../src/adapters/strong";
+import { readFileBlob } from "../../src/helpers";
 import sampleData from "../../sample_data/converted";
-import { workoutData } from "../schema";
+import { workoutData } from "../../src/schema";
 
 describe("StrongAdapter", () => {
   const adapter = new StrongAdapter();
