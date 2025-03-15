@@ -1,24 +1,23 @@
-import { parse, writeToString } from "fast-csv";
-import WorkoutConverterAdapter from "../adapter";
-import { AdapterInfo, WorkoutDataType } from "../schema";
+import { parse, stringify } from "jsr:@std/csv@^1.0.5";
+import type WorkoutConverterAdapter from "../adapter.ts";
+import type { AdapterInfo, WorkoutDataType } from "../schema.ts";
 import parseDuration from "parse-duration";
-import { parseOptionalFloat, parseOptionalInt } from "../helpers";
-import { DateTime, Duration } from "luxon";
+import { parseOptionalFloat, parseOptionalInt } from "../helpers.ts";
+import { DateTime, Duration } from "ts-luxon";
 
-interface StrongRow {
-  "Date": string,
-  "Workout Name": string,
-  "Duration": string,
-  "Exercise Name": string,
-  "Set Order": string,
-  "Weight": string,
-  "Reps": string,
-  "Distance": string,
-  "Seconds": string,
-  "Notes": string,
-  "Workout Notes": string,
-  "RPE": string,
-}
+type StrongColumn =
+  "Date" |
+  "Workout Name" |
+  "Duration" |
+  "Exercise Name" |
+  "Set Order" |
+  "Weight" |
+  "Reps" |
+  "Distance" |
+  "Seconds" |
+  "Notes" |
+  "Workout Notes" |
+  "RPE";
 
 const DATE_FORMAT = "yyyy-MM-dd h:mm:ss\u202fa";
 
@@ -32,87 +31,64 @@ export default class StrongAdapter implements WorkoutConverterAdapter {
   }
 
   async importWorkoutData(data: Blob): Promise<WorkoutDataType> {
-    return new Promise((resolve, reject) => {
-      const workouts: { [d: string]: WorkoutDataType['workouts'][number] } = {};
+    const parsed = parse(await data.text(), {
+      skipFirstRow: true,
+      strip: true,
+    }) as Record<StrongColumn, string>[];
 
-      const stream = data.stream();
-      const reader = stream.getReader();
-      const decoder = new TextDecoder("utf-8");
-      const parser = parse({ headers: true });
+    const workouts: { [d: string]: WorkoutDataType['workouts'][number] } = {};
 
-      let rowCount = 0;
+    for (const row of parsed) {
+      if (!(row["Date"] in workouts)) {
+        const startedAt = DateTime.fromFormat(row["Date"].toUpperCase(), DATE_FORMAT);
+        const durationMs = parseDuration(row["Duration"]) ?? 0;
+        const endedAt = startedAt.plus(Duration.fromMillis(durationMs));
 
-
-      parser.on("data", (row: StrongRow) => {
-        rowCount += 1;
-
-        if (!(row["Date"] in workouts)) {
-          const startedAt = DateTime.fromFormat(row["Date"].toUpperCase(), DATE_FORMAT);
-          const durationMs = parseDuration(row["Duration"]) ?? 0;
-          const endedAt = startedAt.plus(Duration.fromMillis(durationMs));
-
-          workouts[row["Date"]] = {
-            name: row["Workout Name"],
-            startedAt: startedAt.toJSDate(),
-            finishedAt: endedAt.toJSDate(),
-            rpe: parseOptionalInt(row["RPE"]),
-            exercises: [],
-          }
+        workouts[row["Date"]] = {
+          name: row["Workout Name"],
+          startedAt: startedAt.toJSDate(),
+          finishedAt: endedAt.toJSDate(),
+          rpe: parseOptionalInt(row["RPE"]),
+          exercises: [],
         }
+      }
 
-        const exercises = workouts[row["Date"]].exercises;
-        const exerciseIdx = exercises.findIndex((v) => v.name === row["Exercise Name"]);
+      const exercises = workouts[row["Date"]].exercises;
+      const exerciseIdx = exercises.findIndex((v) => v.name === row["Exercise Name"]);
 
-        const set: WorkoutDataType["workouts"][number]["exercises"][number]["sets"][number] = {
-          completed: true,
-          userNotes: row["Notes"] == "" ? undefined : row["Notes"],
-          measurements: {
-            weightKg: parseOptionalFloat(row["Weight"], true),
-            reps: parseOptionalInt(row["Reps"], true),
-            distanceKm: parseOptionalFloat(row["Distance"], true),
-            durationSeconds: parseOptionalInt(row["Seconds"], true),
-          }
+      const set: WorkoutDataType["workouts"][number]["exercises"][number]["sets"][number] = {
+        completed: true,
+        userNotes: row["Notes"] === "" ? undefined : row["Notes"],
+        measurements: {
+          weightKg: parseOptionalFloat(row["Weight"], true),
+          reps: parseOptionalInt(row["Reps"], true),
+          distanceKm: parseOptionalFloat(row["Distance"], true),
+          durationSeconds: parseOptionalInt(row["Seconds"], true),
         }
+      }
 
-        if (exerciseIdx === -1) {
-          exercises.push({
-            name: row["Exercise Name"],
-            sets: [set]
-          });
-        } else {
-          exercises[exerciseIdx].sets.push(set);
-        }
-      });
-
-      parser.on("end", () => {
-        resolve({
-          metadata: {
-            name: `${this.getInfo().title} Import`,
-            notes: `Imported ${rowCount} rows`
-          },
-          templates: [],
-          workouts: Object.values(workouts),
+      if (exerciseIdx === -1) {
+        exercises.push({
+          name: row["Exercise Name"],
+          sets: [set]
         });
-      })
+      } else {
+        exercises[exerciseIdx].sets.push(set);
+      }
+    }
 
-      parser.on("error", (err) => {
-        reject(err);
-      });
-
-      reader.read().then(function processText({ done, value }) {
-        if (done) {
-          parser.end();
-          return;
-        }
-
-        parser.write(decoder.decode(value, { stream: true }));
-        reader.read().then(processText);
-      })
-    });
+    return {
+      metadata: {
+        name: `${this.getInfo().title} Import`,
+        notes: `Imported ${parsed.length} rows`
+      },
+      templates: [],
+      workouts: Object.values(workouts),
+    }
   }
 
   exportWorkoutData(data: WorkoutDataType): Promise<Blob> {
-    const rows: StrongRow[] = [];
+    const rows: Record<StrongColumn, string>[] = [];
 
     for (const workout of data.workouts) {
       const formattedDate = DateTime.fromJSDate(workout.startedAt).toFormat(DATE_FORMAT);
@@ -138,14 +114,24 @@ export default class StrongAdapter implements WorkoutConverterAdapter {
       }
     }
 
-    return new Promise((resolve, reject) => {
-      writeToString(rows, { headers: true, quoteColumns: [false, true, false, true, false, false, false, false, false, true, true, false], quoteHeaders: false, })
-        .then((str) => {
-          const blob = new Blob([str, '\n'], { type: "text/csv" });
-          resolve(blob);
-        }).catch(err => {
-          reject(err);
-        });
+    const csv = stringify(rows, {
+      headers: true,
+      columns: [
+        "Date",
+        "Workout Name",
+        "Duration",
+        "Exercise Name",
+        "Set Order",
+        "Weight",
+        "Reps",
+        "Distance",
+        "Seconds",
+        "Notes",
+        "Workout Notes",
+        "RPE"
+      ],
     });
+
+    return Promise.resolve(new Blob([csv.replaceAll("\r\n", "\n")], { type: "text/csv" }));
   }
 }

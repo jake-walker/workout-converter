@@ -8,25 +8,26 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      id-token: write
     steps:
       - uses: googleapis/release-please-action@v4
         id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          release-type: node
       - name: Checkout
         if: ${{ steps.release.outputs.release_created }}
         uses: actions/checkout@v4
-      - name: Install pnpm
-        if: ${{ steps.release.outputs.release_created }}
-        uses: pnpm/action-setup@v4
       - name: Setup Node.js
         if: ${{ steps.release.outputs.release_created }}
         uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org
-          cache: "pnpm"
+      - name: Setup Deno
+        if: ${{ steps.release.outputs.release_created }}
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
       - name: Tag version
         if: ${{ steps.release.outputs.release_created }}
         run: |
@@ -41,11 +42,15 @@ jobs:
           git tag -a v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }} -m "Release v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}"
           git push origin v${{ steps.release.outputs.major }}
           git push origin v${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}
-      - name: Publish
+      - name: Publish to deno
         if: ${{ steps.release.outputs.release_created }}
         run: |
-          pnpm install
-          pnpm build
-          pnpm publish
+          deno publish
+      - name: Publish to npm
+        if: ${{ steps.release.outputs.release_created }}
+        run: |
+          deno run -A scripts/build_npm.ts
+          cd npm
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

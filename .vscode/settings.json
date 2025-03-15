@@ -1,3 +1,4 @@
 {
-  "licenser.license": "GPLv3"
+  "licenser.license": "GPLv3",
+  "deno.enable": true
 }

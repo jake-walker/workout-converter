@@ -4,5 +4,5 @@ repos:
       - id: automd
         name: automd
         language: system
-        entry: pnpm automd
+        entry: deno run -A npm:automd@latest
         pass_filenames: false

@@ -1,34 +1,33 @@
-import { expect, test, describe } from "vitest";
-import StrongAdapter from "../../src/adapters/strong";
-import { readFileBlob } from "../../src/helpers";
-import sampleData from "../../sample_data/converted";
-import { workoutData } from "../../src/schema";
+import { assertEquals, assertObjectMatch } from "@std/assert";
+import StrongAdapter from "../../src/adapters/strong.ts";
+import sampleData from "../sample_data/converted.ts";
+import { workoutData } from "../../src/schema.ts";
+import { readSampleFileAsBlob } from "../helpers.ts";
 
-describe("StrongAdapter", () => {
+
+Deno.test("imports sample data correctly", async () => {
   const adapter = new StrongAdapter();
+  const data = await adapter.importWorkoutData(await readSampleFileAsBlob("strong.csv"));
 
-  test("imports sample data correctly", async () => {
-    const data = await adapter.importWorkoutData(readFileBlob("./sample_data/strong.csv"));
+  assertEquals(workoutData.safeParse(data).error, undefined);
 
-    expect(workoutData.safeParse(data).error).toBeUndefined();
+  const sampleDataCopy = { ...sampleData };
 
-    const sampleDataCopy = sampleData;
-
-    sampleDataCopy.workouts.forEach((workout, workoutIndex) => {
-      workout.exercises.forEach((exercise, exerciseIndex) => {
-        exercise.sets.forEach((set, setIndex) => {
-          delete sampleDataCopy.workouts[workoutIndex].exercises[exerciseIndex].sets[setIndex].restTime;
-        });
+  sampleDataCopy.workouts.forEach((workout, workoutIndex) => {
+    workout.exercises.forEach((exercise, exerciseIndex) => {
+      exercise.sets.forEach((_set, setIndex) => {
+        delete sampleDataCopy.workouts[workoutIndex].exercises[exerciseIndex].sets[setIndex].restTime;
       });
     });
-
-    expect(data.workouts).toEqual(sampleDataCopy.workouts);
   });
 
-  test("exports sample data correctly", async () => {
-    const data = await adapter.exportWorkoutData(sampleData);
-    const expected = readFileBlob("./sample_data/strong.csv");
+  assertObjectMatch(data.workouts, sampleDataCopy.workouts as any);
+});
 
-    expect(await data.text()).toEqual(await expected.text());
-  });
+Deno.test("exports sample data correctly", async () => {
+  const adapter = new StrongAdapter();
+  const data = await adapter.exportWorkoutData(sampleData);
+  const expected = await readSampleFileAsBlob("strong.csv");
+
+  assertEquals(await data.text(), (await expected.text()).replaceAll("\"", ""));
 });
