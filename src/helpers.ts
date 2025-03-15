@@ -1,19 +1,13 @@
-import fs from "fs";
-
-export function readFileBlob(filename: string): Blob {
-  const buffer = fs.readFileSync(filename);
-  return new Blob([buffer]);
-}
-
+// deno-lint-ignore-file no-explicit-any
 export function parseOptionalInt(value: any, excludeZero = false): number | undefined {
   if (typeof value !== "string" || value.trim() === "") {
     return undefined;
   }
 
   try {
-    let parsed = parseInt(value, 10);
+    const parsed = parseInt(value, 10);
     return parsed == 0 && excludeZero ? undefined : parsed;
-  } catch (ex) {
+  } catch (_ex) {
     return undefined;
   }
 }
@@ -24,9 +18,9 @@ export function parseOptionalFloat(value: any, excludeZero = false): number | un
   }
 
   try {
-    let parsed = parseFloat(value);
+    const parsed = parseFloat(value);
     return parsed == 0 && excludeZero ? undefined : parsed;
-  } catch (ex) {
+  } catch (_ex) {
     return undefined;
   }
 }
