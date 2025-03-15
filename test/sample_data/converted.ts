@@ -1,4 +1,4 @@
-import { WorkoutDataType } from "../../src/schema.ts";
+import type { WorkoutDataType } from "../../src/schema.ts";
 
 const sampleData: WorkoutDataType = {
   metadata: {

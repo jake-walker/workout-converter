@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "npm:zod@^3.24.2";
 import type WorkoutConverterAdapter from "../adapter.ts";
 import type { AdapterInfo, WorkoutDataType } from "../schema.ts";
 

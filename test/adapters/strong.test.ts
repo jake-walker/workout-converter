@@ -21,6 +21,7 @@ Deno.test("imports sample data correctly", async () => {
     });
   });
 
+  // deno-lint-ignore no-explicit-any
   assertObjectMatch(data.workouts, sampleDataCopy.workouts as any);
 });
 
