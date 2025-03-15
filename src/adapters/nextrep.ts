@@ -31,7 +31,7 @@ export default class NextRepAdapter implements WorkoutConverterAdapter {
   getInfo(): AdapterInfo {
     return {
       title: "NextRep",
-      description: "Workout converter for NextRep strength training data.",
+      description: "Convert workout and template data to and from NextRep's JSON format.",
       website: "https://nextrep.app",
     }
   }

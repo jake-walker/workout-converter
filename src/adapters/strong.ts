@@ -25,7 +25,7 @@ export default class StrongAdapter implements WorkoutConverterAdapter {
   getInfo(): AdapterInfo {
     return {
       title: 'Strong',
-      description: 'Workout converter for Strong strength training data. Please note Strong does not support export of templates.',
+      description: 'Convert workout data to and from Strong\'s CSV format. Please note Strong does not support the export of templates, or importing data back into the app.',
       website: 'https://strong.app/',
     }
   }
