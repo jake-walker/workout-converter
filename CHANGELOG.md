@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/jake-walker/workout-converter/compare/v1.1.0...v1.1.1) (2025-03-15)
+
+
+### Bug Fixes
+
+* typing issues ([de98fbe](https://github.com/jake-walker/workout-converter/commit/de98fbe4d1a8dbc6efbcd9f42a530023161faec1))
+
 ## [1.1.0](https://github.com/jake-walker/workout-converter/compare/v1.0.3...v1.1.0) (2025-03-15)
 
 
