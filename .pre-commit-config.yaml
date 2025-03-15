@@ -1,0 +1,8 @@
+repos:
+  - repo: local
+    hooks:
+      - id: automd
+        name: automd
+        language: system
+        entry: pnpm automd
+        pass_filenames: false
