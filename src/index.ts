@@ -1,7 +1,7 @@
-import WorkoutConverterAdapter from "./adapter";
-import NextRepAdapter from "./adapters/nextrep";
-import StrongAdapter from "./adapters/strong";
-import { AdapterInfo } from "./schema";
+import type WorkoutConverterAdapter from "./adapter.ts";
+import NextRepAdapter from "./adapters/nextrep.ts";
+import StrongAdapter from "./adapters/strong.ts";
+import type { AdapterInfo } from "./schema.ts";
 
 const adapters: WorkoutConverterAdapter[] = [
   new NextRepAdapter(),

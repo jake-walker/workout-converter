@@ -1,6 +1,6 @@
 import { z } from "zod";
-import WorkoutConverterAdapter from "../adapter";
-import { AdapterInfo, WorkoutDataType } from "../schema";
+import type WorkoutConverterAdapter from "../adapter.ts";
+import type { AdapterInfo, WorkoutDataType } from "../schema.ts";
 
 const SUPPORTED_SCHEMA = 7;
 
@@ -57,6 +57,8 @@ export default class NextRepAdapter implements WorkoutConverterAdapter {
             measurements: {
               reps: s.reps,
               weightKg: s.weight,
+              distanceKm: undefined,
+              durationSeconds: undefined
             }
           }))
         }))
@@ -71,7 +73,7 @@ export default class NextRepAdapter implements WorkoutConverterAdapter {
     }
   }
 
-  async exportWorkoutData(data: WorkoutDataType): Promise<Blob> {
+  exportWorkoutData(data: WorkoutDataType): Promise<Blob> {
     const toExport: z.infer<typeof nextRepDataExport> = {
       appVersion: "x.x.x",
       appBuildNumber: "x",
@@ -99,6 +101,6 @@ export default class NextRepAdapter implements WorkoutConverterAdapter {
       });
     }
 
-    return new Blob([JSON.stringify(toExport)], { type: "application/json" });
+    return Promise.resolve(new Blob([JSON.stringify(toExport)], { type: "application/json" }));
   }
 }

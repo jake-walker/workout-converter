@@ -1,6 +1,6 @@
 # Workout Converter
 
-<!-- automd:badges license no-npmDownloads provider="badgen" -->
+<!-- automd:badges name="@jakew/workout-converter" github="jake-walker/workout-converter" license no-npmDownloads provider="badgen" -->
 
 [![npm version](https://flat.badgen.net/npm/v/@jakew/workout-converter)](https://npmjs.com/package/@jakew/workout-converter)
 [![license](https://flat.badgen.net/github/license/jake-walker/workout-converter)](https://github.com/jake-walker/workout-converter/blob/main/LICENSE)
@@ -11,7 +11,7 @@ A TypeScript library for converting strength training workout data between diffe
 
 ## Install
 
-<!-- automd:pm-install -->
+<!-- automd:pm-install name="@jakew/workout-converter" -->
 
 ```sh
 # ✨ Auto-detect
@@ -37,37 +37,18 @@ deno install @jakew/workout-converter
 
 ## Usage
 
-<!-- automd:jsimport imports="getAdapterInfo,convertData" -->
+<!-- automd:jsimport imports="getAdapterInfo,convertData" cjs -->
 
 **ESM** (Node.js, Bun, Deno)
 
 ```js
-import { getAdapterInfo, convertData } from "@jakew/workout-converter";
+import { getAdapterInfo, convertData } from "undefined";
 ```
 
-<!-- /automd -->
+**CommonJS** (Legacy Node.js)
 
-<!-- automd:jsdocs src="./src/index" -->
-
-### `convertData(input, fromAdapterName, toAdapterName)`
-
-Perform data conversion using a specified input and output adapter.
-
-**Example:**
-
-```ts
-convertData(myBlob, "Strong", "NextRep");
-```
-
-### `getAdapterInfo()`
-
-Get information about all available adapters.
-
-**Example:**
-
-```ts
-getAdapterInfo();
-// -> [{"title": "NextRep", "description": "...", "website": "https://nextrep.app"}]
+```js
+const { getAdapterInfo, convertData } = require("undefined");
 ```
 
 <!-- /automd -->
