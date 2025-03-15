@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.3](https://github.com/jake-walker/workout-converter/compare/v1.0.1...v1.0.3) (2025-03-15)
+
+
+### Bug Fixes
+
+* update compile config ([890f903](https://github.com/jake-walker/workout-converter/commit/890f903cdf823abe079880d581342beb1ee84e26))
+
+
+### Miscellaneous Chores
+
+* release 1.0.3 ([1e08ae8](https://github.com/jake-walker/workout-converter/commit/1e08ae877f9a4fda4e91e8649dd0a26b8782824d))
+
 ## [1.0.1](https://github.com/jake-walker/workout-converter/compare/v1.0.0...v1.0.1) (2025-03-15)
 
 
