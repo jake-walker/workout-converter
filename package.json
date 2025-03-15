@@ -5,6 +5,11 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
+  "files": [
+    "README.md",
+    "LICENSE",
+    "dist"
+  ],
   "bugs": {
     "email": "jake@nextrep.app"
   },

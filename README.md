@@ -37,21 +37,12 @@ deno install @jakew/workout-converter
 
 ## Usage
 
-<!-- automd:jsimport cjs imports="getAdapterInfo,convertData" -->
+<!-- automd:jsimport imports="getAdapterInfo,convertData" -->
 
 **ESM** (Node.js, Bun, Deno)
 
 ```js
 import { getAdapterInfo, convertData } from "@jakew/workout-converter";
-```
-
-**CommonJS** (Legacy Node.js)
-
-```js
-const {
-  getAdapterInfo,
-  convertData,
-} = require("@jakew/workout-converter");
 ```
 
 <!-- /automd -->
