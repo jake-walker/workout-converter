@@ -1,12 +1,14 @@
 import type WorkoutConverterAdapter from "./adapter.ts";
 import NextRepAdapter from "./adapters/nextrep.ts";
 import StrongAdapter from "./adapters/strong.ts";
-import type { AdapterInfo } from "./schema.ts";
+import type { AdapterInfo, WorkoutDataType } from "./schema.ts";
 
-const adapters: WorkoutConverterAdapter[] = [
+export const adapters: WorkoutConverterAdapter[] = [
   new NextRepAdapter(),
   new StrongAdapter(),
 ];
+
+export type { AdapterInfo, WorkoutConverterAdapter, WorkoutDataType };
 
 /**
  * Get information about all available adapters.
@@ -19,8 +21,16 @@ export function getAdapterInfo(): AdapterInfo[] {
   return adapters.map((a) => a.getInfo());
 }
 
-function getAdapterByName(name: string): WorkoutConverterAdapter | null {
-  return adapters.find((a) => a.getInfo().title == name) ?? null;
+/**
+ * Get a single adapter by it's name.
+ * @example
+ * getAdapterByName("NextRep");
+ * // -> WorkoutConverterAdapter
+ * @param {string} name - The name of the adapter to get.
+ * @returns {WorkoutConverterAdapter | null} Returns an instance of the adapter.
+ */
+export function getAdapterByName(name: string): WorkoutConverterAdapter | null {
+  return adapters.find((a) => a.getInfo().title.toLowerCase() == name.toLowerCase()) ?? null;
 }
 
 /**

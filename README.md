@@ -7,7 +7,20 @@
 
 <!-- /automd -->
 
-A TypeScript library for converting strength training workout data between different formats.
+A TypeScript library for converting strength training workout data between different apps and formats.
+
+## Formats
+
+The following apps/formats are supported:
+
+<!-- automd:adapter-table -->
+
+| Format | Description |
+| --- | --- |
+| **[NextRep](https://nextrep.app)** | Convert workout and template data to and from NextRep's JSON format. |
+| **[Strong](https://strong.app/)** | Convert workout data to and from Strong's CSV format. Please note Strong does not support the export of templates, or importing data back into the app. |
+
+<!-- /automd -->
 
 ## Install
 
@@ -37,6 +50,10 @@ deno install @jakew/workout-converter
 
 ## Usage
 
+The premise is there are "adapters" for each app or format. When converting between two different formats, the data is converted using the "input adapter" to a common format, then a second "output adapter" converts the common format to it's format. Each adapter contains a method for converting from it's format to the common format, and vice-versa, creating import and export functions.
+
+Use the `getAdapterInfo()` function to get a list of available adapters and descriptions. Then use the `convertData()` function to perform data conversion between two different formats.
+
 <!-- automd:jsimport imports="getAdapterInfo,convertData" cjs -->
 
 **ESM** (Node.js, Bun, Deno)
@@ -52,6 +69,23 @@ const { getAdapterInfo, convertData } = require("undefined");
 ```
 
 <!-- /automd -->
+
+**Conversion Example**
+
+```js
+// Convert from a Strong CSV to a NextRep JSON
+await convertData(myBlob, "Strong", "NextRep");
+```
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+
+[GNU GPL v3.0](https://choosealicense.com/licenses/gpl-3.0/)
 
 <!-- automd:with-automd -->
 

@@ -4,5 +4,5 @@ repos:
       - id: automd
         name: automd
         language: system
-        entry: deno run -A npm:automd@latest
+        entry: deno run -A scripts/gen_docs.ts
         pass_filenames: false
