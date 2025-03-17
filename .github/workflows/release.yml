@@ -45,7 +45,7 @@ jobs:
       - name: Publish to deno
         if: ${{ steps.release.outputs.release_created }}
         run: |
-          deno publish
+          deno publish --allow-slow-types
       - name: Publish to npm
         if: ${{ steps.release.outputs.release_created }}
         run: |
