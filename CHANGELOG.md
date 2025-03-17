@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/jake-walker/workout-converter/compare/v1.1.2...v2.0.0) (2025-03-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* add conversion filters
+
+### Features
+
+* add conversion filters ([2e7175a](https://github.com/jake-walker/workout-converter/commit/2e7175a16410e29295d2c8bc6b85232319c354c7))
+
 ## [1.1.2](https://github.com/jake-walker/workout-converter/compare/v1.1.1...v1.1.2) (2025-03-16)
 
 
