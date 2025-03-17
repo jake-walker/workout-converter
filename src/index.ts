@@ -1,7 +1,8 @@
+import { DateTime } from "npm:ts-luxon@6";
 import type WorkoutConverterAdapter from "./adapter.ts";
 import NextRepAdapter from "./adapters/nextrep.ts";
 import StrongAdapter from "./adapters/strong.ts";
-import type { AdapterInfo, WorkoutDataType } from "./schema.ts";
+import type { AdapterInfo, ConversionFilter, WorkoutDataType } from "./schema.ts";
 
 export const adapters: WorkoutConverterAdapter[] = [
   new NextRepAdapter(),
@@ -38,14 +39,12 @@ export function getAdapterByName(name: string): WorkoutConverterAdapter | null {
  * @example
  * convertData(myBlob, "Strong", "NextRep");
  * @param {Blob} input - The input data to be converted.
- * @param {string} fromAdapterName - The name of the adapter to convert data from.
- * @param {string} toAdapterName - The name of the adapter to convert data to.
+ * @param {WorkoutConverterAdapter} fromAdapter - The adapter to convert data from.
+ * @param {WorkoutConverterAdapter} toAdapter - The adapter to convert data to.
+ * @param {ConversionFilter} filters - Filters that are applied after data is imported, and before it is exported.
  * @returns {Blob} Returns the converted data as a blob.
  */
-export async function convertData(input: Blob, fromAdapterName: string, toAdapterName: string): Promise<Blob> {
-  const fromAdapter = getAdapterByName(fromAdapterName);
-  const toAdapter = getAdapterByName(toAdapterName);
-
+export async function convertData(input: Blob, fromAdapter: WorkoutConverterAdapter, toAdapter: WorkoutConverterAdapter, filters?: ConversionFilter): Promise<Blob> {
   if (fromAdapter === null) {
     throw new Error("Could not find input adapter");
   }
@@ -55,5 +54,19 @@ export async function convertData(input: Blob, fromAdapterName: string, toAdapte
   }
 
   const intermediate = await fromAdapter.importWorkoutData(input);
+
+  if (filters?.excludeOlderThanDays && filters.excludeOlderThanDays > 0) {
+    const excludeBefore = DateTime.now().minus({ days: filters.excludeOlderThanDays }).toJSDate();
+    intermediate.workouts = intermediate.workouts.filter((w) => w.startedAt >= excludeBefore);
+  }
+
+  if (filters?.excludeTemplates === true) {
+    intermediate.templates = [];
+  }
+
+  if (filters?.excludeWorkouts === true) {
+    intermediate.workouts = [];
+  }
+
   return toAdapter.exportWorkoutData(intermediate);
 }
