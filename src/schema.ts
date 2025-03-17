@@ -6,6 +6,12 @@ export type AdapterInfo = {
   website: string;
 }
 
+export type ConversionFilter = {
+  excludeOlderThanDays?: number;
+  excludeTemplates?: boolean;
+  excludeWorkouts?: boolean;
+}
+
 export const workoutData = z.object({
   metadata: z.object({
     name: z.string(),
@@ -13,8 +19,8 @@ export const workoutData = z.object({
   }),
   workouts: z.array(z.object({
     name: z.string(),
-    startedAt: z.date(),
-    finishedAt: z.date().optional(),
+    startedAt: z.coerce.date(),
+    finishedAt: z.coerce.date().optional(),
     rpe: z.number().optional(),
     exercises: z.array(z.object({
       name: z.string(),
