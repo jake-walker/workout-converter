@@ -1,4 +1,4 @@
-import { z } from "npm:zod@^3.24.2";
+import { z } from "zod";
 
 export type AdapterInfo = {
   title: string;
@@ -18,22 +18,22 @@ export const workoutData = z.object({
     notes: z.string(),
   }),
   exercises: z.array(z.object({
-    id: z.string().uuid(),
+    id: z.uuid(),
     name: z.string(),
     description: z.string().optional(),
     exerciseType: z.enum(["weightReps", "timed", "cardio"]).default("weightReps")
   })),
   templates: z.array(z.object({
-    id: z.string().uuid(),
+    id: z.uuid(),
     name: z.string(),
     createdAt: z.coerce.date(),
     exercises: z.array(z.object({
-      id: z.string().uuid(),
-      exerciseId: z.string().uuid(),
+      id: z.uuid(),
+      exerciseId: z.uuid(),
       notes: z.string().optional(),
-      supersetId: z.string().uuid().optional(),
+      supersetId: z.uuid().optional(),
       sets: z.array(z.object({
-        id: z.string().uuid(),
+        id: z.uuid(),
         defaultDistance: z.number().optional(),
         defaultDuration: z.number().int().optional(),
         defaultReps: z.number().int().optional(),
@@ -43,19 +43,19 @@ export const workoutData = z.object({
     }))
   })),
   workouts: z.array(z.object({
-    id: z.string().uuid(),
+    id: z.uuid(),
     name: z.string(),
     startedAt: z.coerce.date(),
     endedAt: z.coerce.date().optional(),
     notes: z.string().optional(),
     rpe: z.number().int().min(0).max(10).optional(),
     exercises: z.array(z.object({
-      id: z.string().uuid(),
-      exerciseId: z.string().uuid(),
+      id: z.uuid(),
+      exerciseId: z.uuid(),
       notes: z.string().optional(),
-      supersetId: z.string().uuid().optional(),
+      supersetId: z.uuid().optional(),
       sets: z.array(z.object({
-        id: z.string().uuid(),
+        id: z.uuid(),
         notes: z.string().optional(),
         distance: z.number().optional(),
         duration: z.number().int().optional(),

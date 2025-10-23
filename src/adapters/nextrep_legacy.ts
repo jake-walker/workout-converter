@@ -1,4 +1,4 @@
-import { z } from "npm:zod@^3.24.2";
+import { z } from "zod";
 import type WorkoutConverterAdapter from "../adapter.ts";
 import type { AdapterInfo, WorkoutDataType } from "../schema.ts";
 import { randomUUID, uuidArray } from "../helpers.ts";

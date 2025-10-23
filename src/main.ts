@@ -1,4 +1,4 @@
-import { DateTime } from "npm:ts-luxon@6";
+import { DateTime } from "ts-luxon";
 import type WorkoutConverterAdapter from "./adapter.ts";
 import NextRepAdapter from "./adapters/nextrep.ts";
 import StrongAdapter from "./adapters/strong.ts";
@@ -66,30 +66,32 @@ export async function convertData(input: Blob, fromAdapter: WorkoutConverterAdap
 }
 
 if (import.meta.main) {
-  const args = Deno.args;
+  (async () => {
+    const args = Deno.args;
 
-  if (args.length !== 3) {
-    console.error("Usage: <filename> <from adapter> <to adapter>");
-    Deno.exit(1);
-  }
+    if (args.length !== 3) {
+      console.error("Usage: <filename> <from adapter> <to adapter>");
+      Deno.exit(1);
+    }
 
-  const [filename, fromAdapterName, toAdapterName] = args;
+    const [filename, fromAdapterName, toAdapterName] = args;
 
-  const input = new Blob([await Deno.readFile(filename)]);
-  const fromAdapter = getAdapterByName(fromAdapterName);
-  const toAdapter = getAdapterByName(toAdapterName);
+    const input = new Blob([await Deno.readFile(filename)]);
+    const fromAdapter = getAdapterByName(fromAdapterName);
+    const toAdapter = getAdapterByName(toAdapterName);
 
-  if (fromAdapter === null) {
-    console.error(`${fromAdapterName} is not a known adapter name!`);
-    Deno.exit(1);
-  }
+    if (fromAdapter === null) {
+      console.error(`${fromAdapterName} is not a known adapter name!`);
+      Deno.exit(1);
+    }
 
-  if (toAdapter === null) {
-    console.error(`${toAdapterName} is not a known adapter name!`);
-    Deno.exit(1);
-  }
+    if (toAdapter === null) {
+      console.error(`${toAdapterName} is not a known adapter name!`);
+      Deno.exit(1);
+    }
 
-  const result = await convertData(input, fromAdapter!, toAdapter!);
+    const result = await convertData(input, fromAdapter!, toAdapter!);
 
-  console.log(await result.text());
+    console.log(await result.text());
+  })();
 }
