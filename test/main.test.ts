@@ -1,7 +1,7 @@
 import { assertEquals } from "@std/assert";
-import WorkoutConverterAdapter from "../src/adapter.ts";
-import { convertData } from "../src/index.ts";
-import { AdapterInfo, workoutData, WorkoutDataType } from "../src/schema.ts";
+import type WorkoutConverterAdapter from "../src/adapter.ts";
+import { convertData } from "../src/main.ts";
+import { type AdapterInfo, workoutData, type WorkoutDataType } from "../src/schema.ts";
 import { DateTime } from "npm:ts-luxon@6";
 
 const testData: WorkoutDataType = {
@@ -9,14 +9,15 @@ const testData: WorkoutDataType = {
     name: "Dummy Data",
     notes: "Dummy Notes"
   },
+  exercises: [],
   templates: [
-    { name: "Test template 1", exercises: [] },
-    { name: "Test template 2", exercises: [] }
+    { id: "c46a3efc-7a01-4266-a15b-029d680973dd", name: "Test template 1", createdAt: new Date(), exercises: [] },
+    { id: "d371aabf-0751-48f8-9396-754deabb4d16", name: "Test template 2", createdAt: new Date(), exercises: [] }
   ],
   workouts: [
-    { name: "Test workout 1", startedAt: DateTime.now().minus({ hours: 1 }).toJSDate(), finishedAt: DateTime.now().toJSDate(), exercises: [] },
-    { name: "Test workout 2", startedAt: DateTime.now().minus({ days: 2, hours: 1 }).toJSDate(), finishedAt: DateTime.now().minus({ days: 2 }).toJSDate(), exercises: [] },
-    { name: "Test workout 3", startedAt: DateTime.now().minus({ days: 7, hours: 1 }).toJSDate(), finishedAt: DateTime.now().minus({ days: 7 }).toJSDate(), exercises: [] },
+    { id: "3234bb5e-c2ad-4c05-b5e0-91c03fcb88f9", name: "Test workout 1", startedAt: DateTime.now().minus({ hours: 1 }).toJSDate(), endedAt: DateTime.now().toJSDate(), exercises: [] },
+    { id: "abd568b9-2a96-489e-9701-70c1aa17c1c8", name: "Test workout 2", startedAt: DateTime.now().minus({ days: 2, hours: 1 }).toJSDate(), endedAt: DateTime.now().minus({ days: 2 }).toJSDate(), exercises: [] },
+    { id: "feddb55a-46d6-4caf-a33b-dd57a23e6f48", name: "Test workout 3", startedAt: DateTime.now().minus({ days: 7, hours: 1 }).toJSDate(), endedAt: DateTime.now().minus({ days: 7 }).toJSDate(), exercises: [] },
   ]
 };
 

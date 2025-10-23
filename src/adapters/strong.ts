@@ -2,7 +2,7 @@ import { parse, stringify } from "jsr:@std/csv@^1.0.5";
 import type WorkoutConverterAdapter from "../adapter.ts";
 import type { AdapterInfo, WorkoutDataType } from "../schema.ts";
 import parseDuration from "npm:parse-duration@^2.1.3";
-import { parseOptionalFloat, parseOptionalInt } from "../helpers.ts";
+import { inferExerciseType, parseOptionalFloat, parseOptionalInt, randomUUID, uuidArray } from "../helpers.ts";
 import { DateTime, Duration } from "npm:ts-luxon@^6.0.0";
 
 type StrongColumn =
@@ -36,6 +36,9 @@ export default class StrongAdapter implements WorkoutConverterAdapter {
       strip: true,
     }) as Record<StrongColumn, string>[];
 
+    const allExercises = uuidArray(new Set(parsed.map((r) => r["Exercise Name"])));
+    const exerciseSetSample: { [id: string]: WorkoutDataType["workouts"][number]["exercises"][number]["sets"][number] } = {};
+
     const workouts: { [d: string]: WorkoutDataType['workouts'][number] } = {};
 
     for (const row of parsed) {
@@ -45,31 +48,39 @@ export default class StrongAdapter implements WorkoutConverterAdapter {
         const endedAt = startedAt.plus(Duration.fromMillis(durationMs));
 
         workouts[row["Date"]] = {
+          id: randomUUID(),
           name: row["Workout Name"],
           startedAt: startedAt.toJSDate(),
-          finishedAt: endedAt.toJSDate(),
+          endedAt: endedAt.toJSDate(),
           rpe: parseOptionalInt(row["RPE"]),
+          notes: row["Workout Notes"] === "" ? undefined : row["Workout Notes"],
           exercises: [],
         }
       }
 
       const exercises = workouts[row["Date"]].exercises;
-      const exerciseIdx = exercises.findIndex((v) => v.name === row["Exercise Name"]);
+      const exerciseId = allExercises[row["Exercise Name"]];
+      const exerciseIdx = exercises.findIndex((v) => v.exerciseId === exerciseId);
 
       const set: WorkoutDataType["workouts"][number]["exercises"][number]["sets"][number] = {
+        id: randomUUID(),
         completed: true,
-        userNotes: row["Notes"] === "" ? undefined : row["Notes"],
-        measurements: {
-          weightKg: parseOptionalFloat(row["Weight"], true),
-          reps: parseOptionalInt(row["Reps"], true),
-          distanceKm: parseOptionalFloat(row["Distance"], true),
-          durationSeconds: parseOptionalInt(row["Seconds"], true),
-        }
+        notes: row["Notes"] === "" ? undefined : row["Notes"],
+        weight: parseOptionalFloat(row["Weight"], true),
+        reps: parseOptionalInt(row["Reps"], true),
+        distance: parseOptionalFloat(row["Distance"], true),
+        duration: parseOptionalInt(row["Seconds"], true),
+      }
+
+      if (!(exerciseId in exerciseSetSample)) {
+        exerciseSetSample[exerciseId] = set;
       }
 
       if (exerciseIdx === -1) {
         exercises.push({
-          name: row["Exercise Name"],
+          id: randomUUID(),
+          exerciseId,
+          supersetId: undefined,
           sets: [set]
         });
       } else {
@@ -82,6 +93,11 @@ export default class StrongAdapter implements WorkoutConverterAdapter {
         name: `${this.getInfo().title} Import`,
         notes: `Imported ${parsed.length} rows`
       },
+      exercises: Object.entries(allExercises).map(([exerciseName, exerciseId]) => ({
+        id: exerciseId,
+        name: exerciseName,
+        exerciseType: exerciseId in exerciseSetSample ? inferExerciseType(exerciseSetSample[exerciseId]) : "weightReps"
+      })),
       templates: [],
       workouts: Object.values(workouts),
     }
@@ -92,22 +108,24 @@ export default class StrongAdapter implements WorkoutConverterAdapter {
 
     for (const workout of data.workouts) {
       const formattedDate = DateTime.fromJSDate(workout.startedAt).toFormat(DATE_FORMAT);
-      const duration = (workout.finishedAt ?? workout.startedAt).getTime() - workout.startedAt.getTime();
+      const duration = (workout.endedAt ?? workout.startedAt).getTime() - workout.startedAt.getTime();
 
       for (const exercise of workout.exercises) {
+        const exerciseName = data.exercises.find((e) => e.id === exercise.exerciseId)?.name ?? "Unknown Exercise";
+
         for (const [index, set] of exercise.sets.entries()) {
           rows.push({
             Date: formattedDate.toLowerCase(),
             "Workout Name": workout.name,
             Duration: `${duration / 60000}m`,
-            "Exercise Name": exercise.name,
+            "Exercise Name": exerciseName,
             "Set Order": (index + 1).toString(),
-            "Weight": set.measurements.weightKg?.toString() || "0",
-            "Reps": set.measurements.reps?.toString() || "0",
-            Distance: set.measurements.distanceKm?.toString() || "0",
-            Seconds: set.measurements.durationSeconds?.toString() || "0",
-            Notes: set.userNotes || "",
-            "Workout Notes": "",
+            "Weight": set.weight?.toString() || "0",
+            "Reps": set.reps?.toString() || "0",
+            Distance: set.distance?.toString() || "0",
+            Seconds: set.duration?.toString() || "0",
+            Notes: set.notes || "",
+            "Workout Notes": workout.notes || "",
             RPE: workout.rpe?.toString() || "",
           })
         }

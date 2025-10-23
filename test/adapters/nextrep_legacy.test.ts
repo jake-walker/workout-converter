@@ -1,22 +1,20 @@
 import { assertEquals } from "@std/assert";
-import NextRepAdapter from "../../src/adapters/nextrep.ts";
+import NextRepLegacyAdapter from "../../src/adapters/nextrep_legacy.ts";
 import { workoutData } from "../../src/schema.ts";
 import sampleData from "../sample_data/converted.ts";
-import { readSampleFileAsBlob } from "../helpers.ts";
+import { normaliseUuids, readSampleFileAsBlob } from "../helpers.ts";
 
-Deno.test("NextRepAdapter imports data correctly", async () => {
-  const adapter = new NextRepAdapter();
+Deno.test("NextRepLegacyAdapter imports data correctly", async () => {
+  const adapter = new NextRepLegacyAdapter();
 
-  const data = await adapter.importWorkoutData(await readSampleFileAsBlob("nextrep.json"));
+  const data = normaliseUuids(await adapter.importWorkoutData(await readSampleFileAsBlob("nextrep_legacy.json")));
 
   assertEquals(workoutData.safeParse(data).error, undefined);
 
-  const sampleDataCopy = { ...sampleData };
+  const sampleDataCopy = normaliseUuids(sampleData);
 
   sampleDataCopy.workouts.forEach((workout, workoutIndex) => {
     workout.exercises.forEach((exercise, exerciseIndex) => {
-      delete sampleDataCopy.workouts[workoutIndex].rpe;
-
       exercise.sets.forEach((_set, setIndex) => {
         delete sampleDataCopy.workouts[workoutIndex].exercises[exerciseIndex].sets[setIndex].notes;
       });
@@ -27,11 +25,11 @@ Deno.test("NextRepAdapter imports data correctly", async () => {
   assertEquals(data.templates, sampleDataCopy.templates);
 });
 
-Deno.test("NextRepAdapter exports sample data correctly", async () => {
-  const adapter = new NextRepAdapter();
+Deno.test("NextRepLegacyAdapter exports sample data correctly", async () => {
+  const adapter = new NextRepLegacyAdapter();
 
   const data = await adapter.exportWorkoutData(sampleData);
-  const expected = await readSampleFileAsBlob("nextrep.json");
+  const expected = await readSampleFileAsBlob("nextrep_legacy.json");
 
   const jsonData = JSON.parse(await data.text());
   const jsonExpected = JSON.parse(await expected.text());

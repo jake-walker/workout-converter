@@ -5,171 +5,183 @@ const sampleData: WorkoutDataType = {
     name: "Sample Workout Data",
     notes: "Sample Workout Data",
   },
+  exercises: [
+    {
+      id: "4ff8059e-91c0-4064-bff1-07468d4a4d07",
+      name: "Test Exercise A",
+      exerciseType: "weightReps"
+    },
+    {
+      id: "3a561a27-2739-47d3-904b-981484ba5bc9",
+      name: "Test Exercise B",
+      exerciseType: "weightReps"
+    },
+    {
+      id: "4ebf45c4-1222-4ad3-b5fd-34917371dd9f",
+      name: "Test Exercise C",
+      exerciseType: "weightReps"
+    }
+  ],
   templates: [],
   workouts: [
     {
+      id: "86532a0b-a71c-40bc-9e13-31e76d955935",
       name: "Test Workout A",
       startedAt: new Date(2025, 0, 30, 12, 34, 56),
-      finishedAt: new Date(2025, 0, 30, 13, 23, 56),
+      endedAt: new Date(2025, 0, 30, 13, 23, 56),
       rpe: undefined,
+      notes: undefined,
       exercises: [
         {
-          name: "Test Exercise A",
+          id: "3933b668-a664-42dc-82fe-6e59b627b2bd",
+          exerciseId: "4ff8059e-91c0-4064-bff1-07468d4a4d07", // Test Exercise A
+          notes: undefined,
+          supersetId: undefined,
           sets: [
             {
+              id: "0f8a5956-67f5-4fc3-8ffa-b441e1f2111d",
               completed: true,
-              measurements: {
-                reps: 10,
-                weightKg: 25.0,
-                distanceKm: undefined,
-                durationSeconds: undefined
-              },
-              userNotes: "Hello",
+              reps: 10,
+              weight: 25.0,
+              notes: "Hello",
               restTime: 90,
+              duration: undefined,
+              distance: undefined
             },
             {
+              id: "263d4361-6198-445f-a15d-fbf6377ef114",
               completed: true,
-              measurements: {
-                reps: 20,
-                weightKg: 27.5,
-                distanceKm: undefined,
-                durationSeconds: undefined
-              },
-              userNotes: "World",
+              reps: 20,
+              weight: 27.5,
+              notes: "World",
               restTime: 90,
+              duration: undefined,
+              distance: undefined
             },
             {
+              id: "24275166-6d95-4489-bda9-09278b30afbe",
               completed: true,
-              measurements: {
-                reps: 30,
-                weightKg: 30.0,
-                distanceKm: undefined,
-                durationSeconds: undefined
-              },
-              userNotes: "12345",
+              reps: 30,
+              weight: 30.0,
+              notes: "12345",
               restTime: 90,
+              duration: undefined,
+              distance: undefined
             }
           ]
         },
         {
-          name: "Test Exercise B",
+          id: "14bfd017-dff7-4481-9a68-4c8e0ebd2190",
+          exerciseId: "3a561a27-2739-47d3-904b-981484ba5bc9", // Test Exercise B
+          notes: undefined,
+          supersetId: undefined,
           sets: [
             {
+              id: "bc44d7e2-46d8-4fb1-819d-790c66b160ee",
               completed: true,
               restTime: 90,
-              userNotes: undefined,
-              measurements: {
-                reps: 5,
-                weightKg: 32.5,
-                distanceKm: undefined,
-                durationSeconds: undefined
-              },
+              reps: 5,
+              weight: 32.5,
+              duration: undefined,
+              distance: undefined
             },
             {
+              id: "dfe9465c-ddf6-4f5f-af4f-640fdb6ad036",
               completed: true,
               restTime: 90,
-              userNotes: undefined,
-              measurements: {
-                reps: 15,
-                weightKg: 35.0,
-                distanceKm: undefined,
-                durationSeconds: undefined
-              },
+              reps: 15,
+              weight: 35.0,
+              duration: undefined,
+              distance: undefined
             },
             {
+              id: "b430ddf8-5517-484d-ae1e-db405fe5a530",
               completed: true,
               restTime: 90,
-              userNotes: undefined,
-              measurements: {
-                reps: 25,
-                weightKg: 37.5,
-                distanceKm: undefined,
-                durationSeconds: undefined
-              },
+              reps: 25,
+              weight: 37.5,
+              duration: undefined,
+              distance: undefined
             }
           ]
         }
       ]
     },
     {
+      id: "678f5b05-318d-4236-9a40-71f503ce82ec",
       name: "Test Workout B",
       startedAt: new Date(2025, 0, 29, 17, 30, 0),
-      finishedAt: new Date(2025, 0, 29, 18, 34, 0),
+      endedAt: new Date(2025, 0, 29, 18, 34, 0),
       rpe: undefined,
+      notes: undefined,
       exercises: [
         {
-          name: "Test Exercise C",
+          id: "933958a2-4501-4dd4-9567-fe841e9deaa3",
+          exerciseId: "4ebf45c4-1222-4ad3-b5fd-34917371dd9f", // Test Exercise C
+          notes: undefined,
+          supersetId: undefined,
           sets: [
             {
+              id: "cb63c837-14c0-489f-bf7c-6e62add70856",
               completed: true,
+              reps: 10,
+              weight: 25.0,
+              duration: undefined,
               restTime: undefined,
-              userNotes: undefined,
-              measurements: {
-                reps: 10,
-                weightKg: 25.0,
-                distanceKm: undefined,
-                durationSeconds: undefined
-              },
+              distance: undefined
             },
             {
+              id: "f4608a0e-3d17-43e4-9613-668d21dd851a",
               completed: true,
+              reps: 20,
+              weight: 27.5,
+              duration: undefined,
               restTime: undefined,
-              userNotes: undefined,
-              measurements: {
-                reps: 20,
-                weightKg: 27.5,
-                distanceKm: undefined,
-                durationSeconds: undefined
-              },
+              distance: undefined
             },
             {
+              id: "d7864425-b4a2-4765-a896-c490da9646a0",
               completed: true,
+              reps: 30,
+              weight: 30.0,
+              duration: undefined,
               restTime: undefined,
-              userNotes: undefined,
-              measurements: {
-                reps: 30,
-                weightKg: 30.0,
-                distanceKm: undefined,
-                durationSeconds: undefined
-              },
+              distance: undefined
             }
           ]
         },
         {
-          name: "Test Exercise A",
+          id: "74bc13b3-2e0e-4912-b40b-79084ccca37c",
+          exerciseId: "4ff8059e-91c0-4064-bff1-07468d4a4d07", // Test Exercise A
+          notes: undefined,
+          supersetId: undefined,
           sets: [
             {
+              id: "6cb5971b-f0b1-4362-8f64-c06f646b50bf",
               completed: true,
+              reps: 5,
+              weight: 32.5,
+              duration: undefined,
               restTime: undefined,
-              userNotes: undefined,
-              measurements: {
-                reps: 5,
-                weightKg: 32.5,
-                distanceKm: undefined,
-                durationSeconds: undefined
-              },
+              distance: undefined
             },
             {
+              id: "7fca1b04-83ce-4f9d-9177-93d7870c0b3e",
               completed: true,
+              reps: 15,
+              weight: 35.0,
+              duration: undefined,
               restTime: undefined,
-              userNotes: undefined,
-              measurements: {
-                reps: 15,
-                weightKg: 35.0,
-                distanceKm: undefined,
-                durationSeconds: undefined
-              },
+              distance: undefined
             },
             {
+              id: "1c28b52a-032c-427c-bbd4-07d5a537d389",
               completed: true,
+              reps: 25,
+              weight: 37.5,
+              duration: undefined,
               restTime: undefined,
-              userNotes: undefined,
-              measurements: {
-                reps: 25,
-                weightKg: 37.5,
-                distanceKm: undefined,
-                durationSeconds: undefined
-              },
+              distance: undefined
             }
           ]
         }

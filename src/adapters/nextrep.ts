@@ -1,31 +1,9 @@
-import { z } from "npm:zod@^3.24.2";
 import type WorkoutConverterAdapter from "../adapter.ts";
+import { fractionalSecondsReplacer } from "../helpers.ts";
 import type { AdapterInfo, WorkoutDataType } from "../schema.ts";
+import { NextRepExportSchema, type NextRepExport, type MeasurementType } from "./nextrep_schema.g.ts";
 
-const SUPPORTED_SCHEMA = 7;
-
-const nextRepDataExport = z.object({
-  appVersion: z.string(),
-  appBuildNumber: z.string(),
-  schemaVersion: z.literal(SUPPORTED_SCHEMA.toString()),
-  exportDate: z.coerce.date(),
-  workouts: z.array(z.object({
-    title: z.string(),
-    createdAt: z.coerce.date(),
-    completedAt: z.coerce.date().nullable(),
-    rpe: z.number().min(0).max(10).int().nullable(),
-    isTemplate: z.boolean(),
-    exercises: z.array(z.object({
-      exerciseName: z.string(),
-      sets: z.array(z.object({
-        reps: z.number().int().finite().positive(),
-        weight: z.number().finite(),
-        restTime: z.number().finite().positive().nullable(),
-        completed: z.boolean(),
-      }))
-    }))
-  }))
-});
+const SUPPORTED_SCHEMA = 1;
 
 export default class NextRepAdapter implements WorkoutConverterAdapter {
   getInfo(): AdapterInfo {
@@ -36,71 +14,145 @@ export default class NextRepAdapter implements WorkoutConverterAdapter {
     }
   }
 
+  private convertExportMeasurementType(val: MeasurementType | undefined): WorkoutDataType["exercises"][number]["exerciseType"] {
+    if (val === "weightReps" || val === undefined) {
+      return "weightReps"
+    } else if (val === "distance") {
+      return "cardio"
+    } else if (val === "time") {
+      return "timed"
+    }
+
+    throw new Error(`Failed to convert from measurement type \"${val}\"`)
+  }
+
+  private convertInternalMeasurementType(val: WorkoutDataType["exercises"][number]["exerciseType"]): MeasurementType {
+    if (val === "weightReps") {
+      return "weightReps"
+    } else if (val === "cardio") {
+      return "distance"
+    } else if (val === "timed") {
+      return "time"
+    }
+
+    throw new Error(`Failed to convert from measurement type \"${val}\"`)
+  }
+
   async importWorkoutData(data: Blob): Promise<WorkoutDataType> {
-    const parsed = nextRepDataExport.parse(JSON.parse(await data.text()));
+    const parsed = NextRepExportSchema.parse(JSON.parse(await data.text()));
 
     return {
       metadata: {
         name: `${this.getInfo().title} Import`,
-        notes: `From NextRep ${parsed.appVersion}+${parsed.appBuildNumber} (${parsed.schemaVersion}). Contains ${parsed.workouts.length} workouts.`
+        notes: `From NextRep ${parsed.meta.nrVersion}+${parsed.meta.nrBuildNumber} (${parsed.meta.nrSchemaVersion}). Contains ${parsed.workouts.length} workouts.`
       },
-      workouts: parsed.workouts.filter((w) => w.isTemplate === false).map((w) => ({
-        name: w.title,
-        startedAt: w.createdAt,
-        finishedAt: w.completedAt ?? undefined,
-        rpe: w.rpe ?? undefined,
+      exercises: parsed.exercises.map((e) => ({
+        id: e.id,
+        name: e.name,
+        description: e.description,
+        exerciseType: this.convertExportMeasurementType(e.measurementType),
+      })),
+      workouts: parsed.workouts.map((w) => ({
+        id: w.id,
+        name: w.name,
+        startedAt: w.startTime,
+        endedAt: w.endTime,
+        notes: w.notes,
         exercises: w.exercises.map((e) => ({
-          name: e.exerciseName,
+          id: e.id,
+          exerciseId: e.exerciseId,
+          notes: e.notes,
+          supersetId: e.supersetGroupId,
           sets: e.sets.map((s) => ({
-            completed: s.completed,
-            restTime: s.restTime ?? undefined,
-            measurements: {
-              reps: s.reps,
-              weightKg: s.weight,
-              distanceKm: undefined,
-              durationSeconds: undefined
-            }
+            id: s.id,
+            distance: s.distance,
+            duration: s.duration,
+            reps: s.reps,
+            weight: s.weight,
+            restTime: s.restTime,
+            completed: s.completed
           }))
         }))
       })),
-      templates: parsed.workouts.filter((w) => w.isTemplate === true).map((t) => ({
-        name: t.title,
+      templates: parsed.templates.map((t) => ({
+        id: t.id,
+        name: t.name,
+        createdAt: t.createdAt,
         exercises: t.exercises.map((e) => ({
-          name: e.exerciseName,
-          sets: e.sets.length,
+          id: e.id,
+          exerciseId: e.exerciseId,
+          notes: e.notes,
+          supersetId: e.supersetGroupId,
+          sets: e.sets.map((s) => ({
+            id: s.id,
+            defaultDistance: s.distance,
+            defaultDuration: s.duration,
+            defaultReps: s.reps,
+            defaultWeight: s.weight,
+            restTime: s.restTime
+          }))
         }))
       })),
     }
   }
 
   exportWorkoutData(data: WorkoutDataType): Promise<Blob> {
-    const toExport: z.infer<typeof nextRepDataExport> = {
-      appVersion: "x.x.x",
-      appBuildNumber: "x",
-      exportDate: new Date(),
-      schemaVersion: SUPPORTED_SCHEMA.toString(),
-      workouts: []
+    const toExport: NextRepExport = {
+      meta: {
+        exportDate: new Date(),
+        nrBuildNumber: "x",
+        nrSchemaVersion: SUPPORTED_SCHEMA,
+        nrVersion: "x.x.x"
+      },
+      exercises: data.exercises.map((e) => ({
+        id: e.id,
+        name: e.name,
+        description: e.description,
+        measurementType: this.convertInternalMeasurementType(e.exerciseType)
+      })),
+      templates: data.templates.map((t) => ({
+        id: t.id,
+        name: t.name,
+        createdAt: t.createdAt,
+        exercises: t.exercises.map((e) => ({
+          id: e.id,
+          exerciseId: e.exerciseId,
+          notes: e.notes,
+          supersetGroupId: e.supersetId,
+          sets: e.sets.map((s) => ({
+            id: s.id,
+            distance: s.defaultDistance,
+            duration: s.defaultDuration,
+            reps: s.defaultReps,
+            weight: s.defaultWeight,
+            restTime: s.restTime
+          }))
+        }))
+      })),
+      workouts: data.workouts.map((w) => ({
+        id: w.id,
+        name: w.name,
+        startTime: w.startedAt,
+        endTime: w.endedAt,
+        notes: w.notes,
+        exercises: w.exercises.map((e) => ({
+          id: e.id,
+          exerciseId: e.exerciseId,
+          notes: e.notes,
+          supersetGroupId: e.supersetId,
+          sets: e.sets.map((s) => ({
+            id: s.id,
+            distance: s.distance,
+            duration: s.duration,
+            reps: s.reps,
+            weight: s.weight,
+            restTime: s.restTime,
+            completed: s.completed
+          }))
+        }))
+      }))
     };
 
-    for (const workout of data.workouts) {
-      toExport.workouts.push({
-        title: workout.name,
-        createdAt: workout.startedAt,
-        completedAt: workout.finishedAt ?? null,
-        isTemplate: false,
-        rpe: workout.rpe ?? null,
-        exercises: workout.exercises.map((e) => ({
-          exerciseName: e.name,
-          sets: e.sets.map((s) => ({
-            reps: s.measurements.reps ?? 0,
-            weight: s.measurements.weightKg ?? 0,
-            restTime: s.restTime ?? null,
-            completed: s.completed
-          })),
-        })),
-      });
-    }
-
-    return Promise.resolve(new Blob([JSON.stringify(toExport)], { type: "application/json" }));
+    return Promise.resolve(new Blob([JSON.stringify(toExport, fractionalSecondsReplacer)], { type: "application/json" }));
   }
 }

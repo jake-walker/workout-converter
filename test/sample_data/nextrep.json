@@ -1,114 +1,143 @@
 {
-  "appVersion": "0.5.2",
-  "appBuildNumber": "10",
-  "schemaVersion": "7",
-  "exportDate": "2025-02-22T19:38:54.502208",
+  "$schema": "https://nextrep.app/export.schema.json",
+  "meta": {
+    "exportDate": "2025-02-22T19:38:54Z",
+    "nrBuildNumber": "1",
+    "nrVersion": "2.0.0",
+    "nrSchemaVersion": 1
+  },
+  "exercises": [
+    {
+      "id": "4ff8059e-91c0-4064-bff1-07468d4a4d07",
+      "name": "Test Exercise A",
+      "exerciseType": "weightReps"
+    },
+    {
+      "id": "3a561a27-2739-47d3-904b-981484ba5bc9",
+      "name": "Test Exercise B",
+      "exerciseType": "weightReps"
+    },
+    {
+      "id": "4ebf45c4-1222-4ad3-b5fd-34917371dd9f",
+      "name": "Test Exercise C",
+      "exerciseType": "weightReps"
+    }
+  ],
+  "templates": [],
   "workouts": [
     {
-      "title": "Test Workout A",
-      "createdAt": "2025-01-30T12:34:56.000Z",
-      "completedAt": "2025-01-30T13:23:56.000Z",
-      "rpe": null,
-      "isTemplate": false,
+      "id": "86532a0b-a71c-40bc-9e13-31e76d955935",
+      "name": "Test Workout A",
+      "startTime": "2025-01-30T12:34:56Z",
+      "endTime": "2025-01-30T13:23:56Z",
       "exercises": [
         {
-          "exerciseName": "Test Exercise A",
+          "id": "3933b668-a664-42dc-82fe-6e59b627b2bd",
+          "exerciseId": "4ff8059e-91c0-4064-bff1-07468d4a4d07",
           "sets": [
             {
+              "id": "0f8a5956-67f5-4fc3-8ffa-b441e1f2111d",
+              "completed": true,
               "reps": 10,
               "weight": 25.0,
-              "restTime": 90,
-              "completed": true
+              "restTime": 90
             },
             {
+              "id": "263d4361-6198-445f-a15d-fbf6377ef114",
+              "completed": true,
               "reps": 20,
               "weight": 27.5,
-              "restTime": 90,
-              "completed": true
+              "restTime": 90
             },
             {
+              "id": "24275166-6d95-4489-bda9-09278b30afbe",
+              "completed": true,
               "reps": 30,
               "weight": 30.0,
-              "restTime": 90,
-              "completed": true
+              "restTime": 90
             }
           ]
         },
         {
-          "exerciseName": "Test Exercise B",
+          "id": "14bfd017-dff7-4481-9a68-4c8e0ebd2190",
+          "exerciseId": "3a561a27-2739-47d3-904b-981484ba5bc9",
           "sets": [
             {
+              "id": "bc44d7e2-46d8-4fb1-819d-790c66b160ee",
+              "completed": true,
+              "restTime": 90,
               "reps": 5,
-              "weight": 32.5,
-              "restTime": 90,
-              "completed": true
+              "weight": 32.5
             },
             {
+              "id": "dfe9465c-ddf6-4f5f-af4f-640fdb6ad036",
+              "completed": true,
+              "restTime": 90,
               "reps": 15,
-              "weight": 35.0,
-              "restTime": 90,
-              "completed": true
+              "weight": 35.0
             },
             {
-              "reps": 25,
-              "weight": 37.5,
+              "id": "b430ddf8-5517-484d-ae1e-db405fe5a530",
+              "completed": true,
               "restTime": 90,
-              "completed": true
+              "reps": 25,
+              "weight": 37.5
             }
           ]
         }
       ]
     },
     {
-      "title": "Test Workout B",
-      "createdAt": "2025-01-29T17:30:00.000Z",
-      "completedAt": "2025-01-29T18:34:00.000Z",
-      "rpe": null,
-      "isTemplate": false,
+      "id": "678f5b05-318d-4236-9a40-71f503ce82ec",
+      "name": "Test Workout B",
+      "startTime": "2025-01-29T17:30:00Z",
+      "endTime": "2025-01-29T18:34:00Z",
       "exercises": [
         {
-          "exerciseName": "Test Exercise C",
+          "id": "933958a2-4501-4dd4-9567-fe841e9deaa3",
+          "exerciseId": "4ebf45c4-1222-4ad3-b5fd-34917371dd9f",
           "sets": [
             {
+              "id": "cb63c837-14c0-489f-bf7c-6e62add70856",
+              "completed": true,
               "reps": 10,
-              "weight": 25.0,
-              "restTime": null,
-              "completed": true
+              "weight": 25.0
             },
             {
+              "id": "f4608a0e-3d17-43e4-9613-668d21dd851a",
+              "completed": true,
               "reps": 20,
-              "weight": 27.5,
-              "restTime": null,
-              "completed": true
+              "weight": 27.5
             },
             {
+              "id": "d7864425-b4a2-4765-a896-c490da9646a0",
+              "completed": true,
               "reps": 30,
-              "weight": 30.0,
-              "restTime": null,
-              "completed": true
+              "weight": 30.0
             }
           ]
         },
         {
-          "exerciseName": "Test Exercise A",
+          "id": "74bc13b3-2e0e-4912-b40b-79084ccca37c",
+          "exerciseId": "4ff8059e-91c0-4064-bff1-07468d4a4d07",
           "sets": [
             {
+              "id": "6cb5971b-f0b1-4362-8f64-c06f646b50bf",
+              "completed": true,
               "reps": 5,
-              "weight": 32.5,
-              "restTime": null,
-              "completed": true
+              "weight": 32.5
             },
             {
+              "id": "7fca1b04-83ce-4f9d-9177-93d7870c0b3e",
+              "completed": true,
               "reps": 15,
-              "weight": 35.0,
-              "restTime": null,
-              "completed": true
+              "weight": 35.0
             },
             {
+              "id": "1c28b52a-032c-427c-bbd4-07d5a537d389",
+              "completed": true,
               "reps": 25,
-              "weight": 37.5,
-              "restTime": null,
-              "completed": true
+              "weight": 37.5
             }
           ]
         }

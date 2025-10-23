@@ -1,5 +1,5 @@
 import { md } from "npm:mdbox@0.1.1";
-import { getAdapterInfo } from "../src/index.ts";
+import { getAdapterInfo } from "../src/main.ts";
 import { automd, defineGenerator } from "npm:automd@0.4.0";
 
 Deno.mkdir("docs").catch((_) => { });
