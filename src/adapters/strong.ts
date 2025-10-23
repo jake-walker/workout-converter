@@ -1,9 +1,9 @@
-import { parse, stringify } from "jsr:@std/csv@^1.0.5";
+import { parse, stringify } from "@std/csv";
 import type WorkoutConverterAdapter from "../adapter.ts";
 import type { AdapterInfo, WorkoutDataType } from "../schema.ts";
-import parseDuration from "npm:parse-duration@^2.1.3";
+import parseDuration from "parse-duration";
 import { inferExerciseType, parseOptionalFloat, parseOptionalInt, randomUUID, uuidArray } from "../helpers.ts";
-import { DateTime, Duration } from "npm:ts-luxon@^6.0.0";
+import { DateTime, Duration } from "ts-luxon";
 
 type StrongColumn =
   "Date" |

@@ -1,6 +1,6 @@
 import { build, emptyDir } from "@deno/dnt";
-import { copy } from "https://deno.land/std@0.224.0/fs/mod.ts";
-import * as path from "https://deno.land/std@0.224.0/path/mod.ts";
+import { copy } from "@std/fs";
+import * as path from "@std/path";
 
 await emptyDir("./npm");
 await copy("./test/sample_data", "./npm/script/test/sample_data", { overwrite: true });
@@ -9,7 +9,7 @@ await copy("./test/sample_data", "./npm/esm/test/sample_data", { overwrite: true
 const versionFile = await Deno.readTextFile(path.join(path.dirname(path.fromFileUrl(import.meta.url)), "../.release-please-manifest.json"));
 
 await build({
-  entryPoints: ["./src/index.ts"],
+  entryPoints: ["./src/main.ts"],
   outDir: "./npm",
   rootTestDir: "./test",
   testPattern: "**/*.test.ts",
@@ -17,6 +17,7 @@ await build({
     return !diagnostic?.file?.fileName.includes("@std/assert");
   },
   test: false,
+  typeCheck: false,
   shims: {
     deno: true,
   },

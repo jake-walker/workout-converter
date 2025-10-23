@@ -1,4 +1,4 @@
-import { z } from "npm:zod@^3.24.2";
+import * as z from "zod";
 
 // The type of exercise and corresponds to how the app will prompt for user input.
 
