@@ -12,28 +12,33 @@ export type ConversionFilter = {
   excludeWorkouts?: boolean;
 }
 
+const setType = z.enum(["warmup", "regular"]).default("warmup");
+
+export type SetType = z.infer<typeof setType>;
+
 export const workoutData = z.object({
   metadata: z.object({
     name: z.string(),
     notes: z.string(),
   }),
   exercises: z.array(z.object({
-    id: z.uuid(),
+    id: z.guid(),
     name: z.string(),
     description: z.string().optional(),
     exerciseType: z.enum(["weightReps", "timed", "cardio"]).default("weightReps")
   })),
   templates: z.array(z.object({
-    id: z.uuid(),
+    id: z.guid(),
     name: z.string(),
     createdAt: z.coerce.date(),
     exercises: z.array(z.object({
-      id: z.uuid(),
-      exerciseId: z.uuid(),
+      id: z.guid(),
+      exerciseId: z.guid(),
       notes: z.string().optional(),
-      supersetId: z.uuid().optional(),
+      supersetId: z.guid().optional(),
       sets: z.array(z.object({
-        id: z.uuid(),
+        id: z.guid(),
+        type: setType,
         defaultDistance: z.number().optional(),
         defaultDuration: z.number().int().optional(),
         defaultReps: z.number().int().optional(),
@@ -43,19 +48,20 @@ export const workoutData = z.object({
     }))
   })),
   workouts: z.array(z.object({
-    id: z.uuid(),
+    id: z.guid(),
     name: z.string(),
     startedAt: z.coerce.date(),
     endedAt: z.coerce.date().optional(),
     notes: z.string().optional(),
     rpe: z.number().int().min(0).max(10).optional(),
     exercises: z.array(z.object({
-      id: z.uuid(),
-      exerciseId: z.uuid(),
+      id: z.guid(),
+      exerciseId: z.guid(),
       notes: z.string().optional(),
-      supersetId: z.uuid().optional(),
+      supersetId: z.guid().optional(),
       sets: z.array(z.object({
-        id: z.uuid(),
+        id: z.guid(),
+        type: setType,
         notes: z.string().optional(),
         distance: z.number().optional(),
         duration: z.number().int().optional(),

@@ -9,6 +9,13 @@ export const MeasurementTypeSchema = z.enum([
 ]);
 export type MeasurementType = z.infer<typeof MeasurementTypeSchema>;
 
+
+export const SetTypeSchema = z.enum([
+    "regular",
+    "warmup",
+]);
+export type SetType = z.infer<typeof SetTypeSchema>;
+
 export const ExerciseSchema = z.object({
     "description": z.string().optional(),
     "id": z.string(),
@@ -35,6 +42,7 @@ export const WorkoutSetSchema = z.object({
     "completed": z.boolean(),
     "timestamp": z.coerce.date().optional(),
     "id": z.string(),
+    "type": SetTypeSchema,
     "distance": z.number().optional(),
     "duration": z.number().optional(),
     "reps": z.number().optional(),
@@ -51,6 +59,7 @@ export const TemplateSetSchema = z.object({
     "reps": z.number().optional(),
     "restTime": z.number().optional(),
     "targetRepRange": TargetRepRangeSchema.optional(),
+    "type": SetTypeSchema,
     "weight": z.number().optional(),
 });
 export type TemplateSet = z.infer<typeof TemplateSetSchema>;
@@ -70,6 +79,7 @@ export const TemplateExerciseSchema = z.object({
     "notes": z.string().optional(),
     "sets": z.array(TemplateSetSchema),
     "supersetGroupId": z.string().optional(),
+    "warmupSetCount": z.number().optional(),
 });
 export type TemplateExercise = z.infer<typeof TemplateExerciseSchema>;
 

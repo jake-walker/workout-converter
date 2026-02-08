@@ -75,6 +75,7 @@ export default class NextRepLegacyAdapter implements WorkoutConverterAdapter {
           supersetId: e.supersetGroup !== null ? supersetIds[e.supersetGroup] : undefined,
           sets: e.sets.map((s) => ({
             id: randomUUID(),
+            type: "regular",
             duration: s.duration ?? undefined,
             reps: (s.reps !== null && s.reps > 0) ? s.reps : undefined,
             weight: s.weight ?? undefined,
@@ -95,6 +96,7 @@ export default class NextRepLegacyAdapter implements WorkoutConverterAdapter {
           supersetId: e.supersetGroup !== null ? supersetIds[e.supersetGroup] : undefined,
           sets: e.sets.map((s) => ({
             id: randomUUID(),
+            type: "regular",
             defaultDuration: s.duration ?? undefined,
             defaultReps: s.reps ?? undefined,
             defaultWeight: s.weight ?? undefined,

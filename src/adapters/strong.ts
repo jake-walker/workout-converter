@@ -64,6 +64,7 @@ export default class StrongAdapter implements WorkoutConverterAdapter {
 
       const set: WorkoutDataType["workouts"][number]["exercises"][number]["sets"][number] = {
         id: randomUUID(),
+        type: "regular",
         completed: true,
         notes: row["Notes"] === "" ? undefined : row["Notes"],
         weight: parseOptionalFloat(row["Weight"], true),

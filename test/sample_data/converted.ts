@@ -40,6 +40,7 @@ const sampleData: WorkoutDataType = {
           sets: [
             {
               id: "0f8a5956-67f5-4fc3-8ffa-b441e1f2111d",
+              type: "regular",
               completed: true,
               reps: 10,
               weight: 25.0,
@@ -50,6 +51,7 @@ const sampleData: WorkoutDataType = {
             },
             {
               id: "263d4361-6198-445f-a15d-fbf6377ef114",
+              type: "regular",
               completed: true,
               reps: 20,
               weight: 27.5,
@@ -60,6 +62,7 @@ const sampleData: WorkoutDataType = {
             },
             {
               id: "24275166-6d95-4489-bda9-09278b30afbe",
+              type: "regular",
               completed: true,
               reps: 30,
               weight: 30.0,
@@ -78,6 +81,7 @@ const sampleData: WorkoutDataType = {
           sets: [
             {
               id: "bc44d7e2-46d8-4fb1-819d-790c66b160ee",
+              type: "regular",
               completed: true,
               restTime: 90,
               reps: 5,
@@ -87,6 +91,7 @@ const sampleData: WorkoutDataType = {
             },
             {
               id: "dfe9465c-ddf6-4f5f-af4f-640fdb6ad036",
+              type: "regular",
               completed: true,
               restTime: 90,
               reps: 15,
@@ -96,6 +101,7 @@ const sampleData: WorkoutDataType = {
             },
             {
               id: "b430ddf8-5517-484d-ae1e-db405fe5a530",
+              type: "regular",
               completed: true,
               restTime: 90,
               reps: 25,
@@ -123,6 +129,7 @@ const sampleData: WorkoutDataType = {
           sets: [
             {
               id: "cb63c837-14c0-489f-bf7c-6e62add70856",
+              type: "regular",
               completed: true,
               reps: 10,
               weight: 25.0,
@@ -132,6 +139,7 @@ const sampleData: WorkoutDataType = {
             },
             {
               id: "f4608a0e-3d17-43e4-9613-668d21dd851a",
+              type: "regular",
               completed: true,
               reps: 20,
               weight: 27.5,
@@ -141,6 +149,7 @@ const sampleData: WorkoutDataType = {
             },
             {
               id: "d7864425-b4a2-4765-a896-c490da9646a0",
+              type: "regular",
               completed: true,
               reps: 30,
               weight: 30.0,
@@ -158,6 +167,7 @@ const sampleData: WorkoutDataType = {
           sets: [
             {
               id: "6cb5971b-f0b1-4362-8f64-c06f646b50bf",
+              type: "regular",
               completed: true,
               reps: 5,
               weight: 32.5,
@@ -167,6 +177,7 @@ const sampleData: WorkoutDataType = {
             },
             {
               id: "7fca1b04-83ce-4f9d-9177-93d7870c0b3e",
+              type: "regular",
               completed: true,
               reps: 15,
               weight: 35.0,
@@ -176,6 +187,7 @@ const sampleData: WorkoutDataType = {
             },
             {
               id: "1c28b52a-032c-427c-bbd4-07d5a537d389",
+              type: "regular",
               completed: true,
               reps: 25,
               weight: 37.5,

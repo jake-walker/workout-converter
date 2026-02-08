@@ -65,6 +65,7 @@ export default class NextRepAdapter implements WorkoutConverterAdapter {
           supersetId: e.supersetGroupId,
           sets: e.sets.map((s) => ({
             id: s.id,
+            type: s.type,
             distance: s.distance,
             duration: s.duration,
             reps: s.reps,
@@ -85,6 +86,7 @@ export default class NextRepAdapter implements WorkoutConverterAdapter {
           supersetId: e.supersetGroupId,
           sets: e.sets.map((s) => ({
             id: s.id,
+            type: s.type,
             defaultDistance: s.distance,
             defaultDuration: s.duration,
             defaultReps: s.reps,
@@ -121,6 +123,7 @@ export default class NextRepAdapter implements WorkoutConverterAdapter {
           supersetGroupId: e.supersetId,
           sets: e.sets.map((s) => ({
             id: s.id,
+            type: s.type,
             distance: s.defaultDistance,
             duration: s.defaultDuration,
             reps: s.defaultReps,
@@ -142,6 +145,7 @@ export default class NextRepAdapter implements WorkoutConverterAdapter {
           supersetGroupId: e.supersetId,
           sets: e.sets.map((s) => ({
             id: s.id,
+            type: s.type,
             distance: s.distance,
             duration: s.duration,
             reps: s.reps,

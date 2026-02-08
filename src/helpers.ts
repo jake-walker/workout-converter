@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import type { WorkoutDataType } from "./schema.ts";
 
 export function randomUUID(): string {
@@ -16,7 +17,6 @@ export function randomUUID(): string {
 }
 
 
-// deno-lint-ignore-file no-explicit-any
 export function parseOptionalInt(value: any, excludeZero = false): number | undefined {
   if (typeof value !== "string" || value.trim() === "") {
     return undefined;
@@ -63,7 +63,6 @@ export function inferExerciseType(setData: WorkoutDataType["workouts"][number]["
   }
 }
 
-// deno-lint-ignore no-explicit-any
 export function fractionalSecondsReplacer(key: any, value: any): any {
   if (typeof value === "string") {
     const isoWithFractionalSeconds = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
