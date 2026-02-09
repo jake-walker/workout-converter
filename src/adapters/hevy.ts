@@ -28,7 +28,7 @@ export default class HevyAdapter implements WorkoutConverterAdapter {
   getInfo(): AdapterInfo {
     return {
       title: 'Hevy',
-      description: 'Convert workout data to and from Hevy\'s CSV format. Please note Hevy does not support the export of templates, or importing data back into the app.',
+      description: 'Convert workout data to and from Hevy\'s CSV format. Hevy does not support the export of templates and importing to Hevy requires a Strong CSV file.',
       website: 'https://www.hevyapp.com/',
     }
   }
