@@ -9,7 +9,7 @@ import {
   workoutData,
   type WorkoutDataType,
 } from "../src/schema.ts";
-import { DateTime } from "npm:ts-luxon@6";
+import { DateTime } from "ts-luxon";
 
 const testData: WorkoutDataType = {
   metadata: {

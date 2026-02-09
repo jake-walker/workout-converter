@@ -21,7 +21,11 @@
       "exclude": [
         "no-slow-types"
       ]
-    }
+    },
+    "exclude": [
+      "migrate.js",
+      "scripts/*"
+    ]
   },
   "fmt": {
     "exclude": [

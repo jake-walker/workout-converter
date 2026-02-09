@@ -4,7 +4,6 @@
 import { parse, stringify } from "@std/csv";
 import type WorkoutConverterAdapter from "../adapter.ts";
 import type { AdapterInfo, SetType, WorkoutDataType } from "../schema.ts";
-import parseDuration from "parse-duration";
 import {
   inferExerciseType,
   parseOptionalFloat,
@@ -12,8 +11,7 @@ import {
   randomUUID,
   uuidArray,
 } from "../helpers.ts";
-import { DateTime, Duration } from "ts-luxon";
-import { WorkoutSchema } from "./nextrep_schema.g.ts";
+import { DateTime } from "ts-luxon";
 
 type HevyColumn =
   | "title"

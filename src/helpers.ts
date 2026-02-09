@@ -76,7 +76,7 @@ export function inferExerciseType(
   }
 }
 
-export function fractionalSecondsReplacer(key: any, value: any): any {
+export function fractionalSecondsReplacer(_key: any, value: any): any {
   if (typeof value === "string") {
     const isoWithFractionalSeconds =
       /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
