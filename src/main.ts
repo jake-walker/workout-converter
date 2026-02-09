@@ -4,11 +4,13 @@ import NextRepAdapter from "./adapters/nextrep.ts";
 import StrongAdapter from "./adapters/strong.ts";
 import { workoutData, type AdapterInfo, type ConversionFilter, type WorkoutDataType } from "./schema.ts";
 import NextRepLegacyAdapter from "./adapters/nextrep_legacy.ts";
+import HevyAdapter from "./adapters/hevy.ts";
 
 export const adapters: WorkoutConverterAdapter[] = [
   new NextRepAdapter(),
   new NextRepLegacyAdapter(),
   new StrongAdapter(),
+  new HevyAdapter(),
 ];
 
 export type { AdapterInfo, WorkoutConverterAdapter, WorkoutDataType };

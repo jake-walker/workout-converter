@@ -1,0 +1,13 @@
+"title","start_time","end_time","description","exercise_title","superset_id","exercise_notes","set_index","set_type","weight_kg","reps","distance_km","duration_seconds","rpe"
+"Test Workout A","30 Jan 2025, 12:34","30 Jan 2025, 13:23","","Test Exercise A",,"Hello",0,"normal",25,10,,,
+"Test Workout A","30 Jan 2025, 12:34","30 Jan 2025, 13:23","","Test Exercise A",,"World",1,"normal",27.5,20,,,
+"Test Workout A","30 Jan 2025, 12:34","30 Jan 2025, 13:23","","Test Exercise A",,"12345",2,"normal",30,30,,,
+"Test Workout A","30 Jan 2025, 12:34","30 Jan 2025, 13:23","","Test Exercise B",,"",0,"normal",32.5,5,,,
+"Test Workout A","30 Jan 2025, 12:34","30 Jan 2025, 13:23","","Test Exercise B",,"",1,"normal",35,15,,,
+"Test Workout A","30 Jan 2025, 12:34","30 Jan 2025, 13:23","","Test Exercise B",,"",2,"normal",37.5,25,,,
+"Test Workout B","29 Jan 2025, 17:30","29 Jan 2025, 18:34","","Test Exercise C",,"",0,"normal",25,10,,,
+"Test Workout B","29 Jan 2025, 17:30","29 Jan 2025, 18:34","","Test Exercise C",,"",1,"normal",27.5,20,,,
+"Test Workout B","29 Jan 2025, 17:30","29 Jan 2025, 18:34","","Test Exercise C",,"",2,"normal",30,30,,,
+"Test Workout B","29 Jan 2025, 17:30","29 Jan 2025, 18:34","","Test Exercise A",,"",0,"normal",32.5,5,,,
+"Test Workout B","29 Jan 2025, 17:30","29 Jan 2025, 18:34","","Test Exercise A",,"",1,"normal",35,15,,,
+"Test Workout B","29 Jan 2025, 17:30","29 Jan 2025, 18:34","","Test Exercise A",,"",2,"normal",37.5,25,,,
