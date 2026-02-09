@@ -1,3 +1,6 @@
+// Copyright 2026 Jake Walker.
+// SPDX-License-Identifier: GPL-3.0-only
+
 import { assertEquals, assertObjectMatch } from "@std/assert";
 import StrongAdapter from "../../src/adapters/strong.ts";
 import sampleData from "../sample_data/converted.ts";

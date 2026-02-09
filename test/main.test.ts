@@ -1,3 +1,6 @@
+// Copyright 2026 Jake Walker.
+// SPDX-License-Identifier: GPL-3.0-only
+
 import { assertEquals } from "@std/assert";
 import type WorkoutConverterAdapter from "../src/adapter.ts";
 import { convertData } from "../src/main.ts";

@@ -1,3 +1,6 @@
+// Copyright 2026 Jake Walker.
+// SPDX-License-Identifier: GPL-3.0-only
+
 import type { WorkoutDataType } from "../../src/schema.ts";
 
 const sampleData: WorkoutDataType = {

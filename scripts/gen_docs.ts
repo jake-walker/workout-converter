@@ -1,3 +1,6 @@
+// Copyright 2026 Jake Walker.
+// SPDX-License-Identifier: GPL-3.0-only
+
 // deno-lint-ignore-file no-import-prefix
 import { md } from "npm:mdbox@0.1.1";
 import { getAdapterInfo } from "../src/main.ts";

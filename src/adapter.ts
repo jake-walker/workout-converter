@@ -1,3 +1,6 @@
+// Copyright 2026 Jake Walker.
+// SPDX-License-Identifier: GPL-3.0-only
+
 // deno-lint-ignore-file no-unused-vars
 
 import type { AdapterInfo, WorkoutDataType } from "./schema.ts";

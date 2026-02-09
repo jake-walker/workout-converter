@@ -1,3 +1,6 @@
+// Copyright 2026 Jake Walker.
+// SPDX-License-Identifier: GPL-3.0-only
+
 import { DateTime } from "ts-luxon";
 import type WorkoutConverterAdapter from "./adapter.ts";
 import NextRepAdapter from "./adapters/nextrep.ts";

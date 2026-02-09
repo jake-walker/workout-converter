@@ -1,3 +1,6 @@
+// Copyright 2026 Jake Walker.
+// SPDX-License-Identifier: GPL-3.0-only
+
 import { build, emptyDir } from "@deno/dnt";
 import { copy } from "@std/fs";
 import * as path from "@std/path";

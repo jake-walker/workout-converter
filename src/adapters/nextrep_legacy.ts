@@ -1,3 +1,6 @@
+// Copyright 2026 Jake Walker.
+// SPDX-License-Identifier: GPL-3.0-only
+
 import { z } from "zod";
 import type WorkoutConverterAdapter from "../adapter.ts";
 import type { AdapterInfo, WorkoutDataType } from "../schema.ts";

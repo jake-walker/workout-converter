@@ -1,3 +1,6 @@
+// Copyright 2026 Jake Walker.
+// SPDX-License-Identifier: GPL-3.0-only
+
 import { assertEquals } from "@std/assert";
 import NextRepLegacyAdapter from "../../src/adapters/nextrep_legacy.ts";
 import { workoutData } from "../../src/schema.ts";

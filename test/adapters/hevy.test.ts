@@ -1,3 +1,6 @@
+// Copyright 2026 Jake Walker.
+// SPDX-License-Identifier: GPL-3.0-only
+
 import { assertEquals, assertObjectMatch } from "@std/assert";
 import HevyAdapter from "../../src/adapters/hevy.ts";
 import sampleData from "../sample_data/converted.ts";
