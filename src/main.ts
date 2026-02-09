@@ -14,6 +14,11 @@ import {
 import NextRepLegacyAdapter from "./adapters/nextrep_legacy.ts";
 import HevyAdapter from "./adapters/hevy.ts";
 
+/**
+ * @constant {WorkoutConverterAdapter[]} adapters
+ * @description An array of all available workout converter adapter instances.
+ *   Each adapter in this array can convert workout data to and from a specific format.
+ */
 export const adapters: WorkoutConverterAdapter[] = [
   new NextRepAdapter(),
   new NextRepLegacyAdapter(),

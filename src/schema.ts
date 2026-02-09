@@ -3,6 +3,13 @@
 
 import { z } from "zod";
 
+/**
+ * @interface AdapterInfo
+ * @description Provides metadata about a workout converter adapter.
+ * @property {string} title - The display name of the adapter.
+ * @property {string} description - A brief description of what the adapter does or what format it handles.
+ * @property {string} website - The URL of the application or format this adapter supports.
+ */
 export type AdapterInfo = {
   title: string;
   description: string;
@@ -89,4 +96,9 @@ export const workoutData = z.object({
   message: "Exercises inside templates and/or workouts are not defined",
 });
 
+/**
+ * @typedef {object} WorkoutDataType
+ * @description Represents the standardized structure for workout data,
+ *   including metadata, exercises, templates, and recorded workouts.
+ */
 export type WorkoutDataType = z.infer<typeof workoutData>;
