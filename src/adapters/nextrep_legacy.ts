@@ -28,40 +28,51 @@ const nextRepDataExport = z.object({
         resistanceLevel: z.number().int().nullable(),
         restTime: z.number().finite().nullable(),
         completed: z.boolean(),
-      }))
-    }))
-  }))
+      })),
+    })),
+  })),
 });
 
 export default class NextRepLegacyAdapter implements WorkoutConverterAdapter {
   getInfo(): AdapterInfo {
     return {
       title: "NextRep (v1)",
-      description: "Convert workout and template data to and from the format used for version 1 of the NextRep app.",
+      description:
+        "Convert workout and template data to and from the format used for version 1 of the NextRep app.",
       website: "https://nextrep.app",
-    }
+    };
   }
 
   async importWorkoutData(data: Blob): Promise<WorkoutDataType> {
     const parsed = nextRepDataExport.parse(JSON.parse(await data.text()));
 
-    const allExercises: Set<string> = new Set(parsed.workouts.flatMap((w) => w.exercises.map((e) => e.exerciseName)));
+    const allExercises: Set<string> = new Set(
+      parsed.workouts.flatMap((w) => w.exercises.map((e) => e.exerciseName)),
+    );
     const exerciseIds = uuidArray(allExercises);
 
-    const allSupersetId: Set<string> = new Set(parsed.workouts.flatMap((w) => w.exercises.map((e) => e.supersetGroup)).filter((s) => s !== null));
+    const allSupersetId: Set<string> = new Set(
+      parsed.workouts.flatMap((w) => w.exercises.map((e) => e.supersetGroup))
+        .filter((s) => s !== null),
+    );
     const supersetIds = uuidArray(allSupersetId);
 
     const internalData: WorkoutDataType = {
       metadata: {
         name: `${this.getInfo().title} Import`,
-        notes: `From NextRep ${parsed.appVersion}+${parsed.appBuildNumber} (${parsed.schemaVersion}). Contains ${parsed.workouts.length} workouts.`
+        notes:
+          `From NextRep ${parsed.appVersion}+${parsed.appBuildNumber} (${parsed.schemaVersion}). Contains ${parsed.workouts.length} workouts.`,
       },
-      exercises: Object.entries(exerciseIds).map(([exerciseName, exerciseId]) => ({
+      exercises: Object.entries(exerciseIds).map((
+        [exerciseName, exerciseId],
+      ) => ({
         id: exerciseId,
         name: exerciseName,
-        exerciseType: "weightReps"
+        exerciseType: "weightReps",
       })),
-      workouts: parsed.workouts.filter((w) => w.isTemplate === false).map((w) => ({
+      workouts: parsed.workouts.filter((w) => w.isTemplate === false).map((
+        w,
+      ) => ({
         id: randomUUID(),
         name: w.title,
         startedAt: w.createdAt,
@@ -72,7 +83,9 @@ export default class NextRepLegacyAdapter implements WorkoutConverterAdapter {
           id: randomUUID(),
           exerciseId: exerciseIds[e.exerciseName],
           notes: e.notes ?? undefined,
-          supersetId: e.supersetGroup !== null ? supersetIds[e.supersetGroup] : undefined,
+          supersetId: e.supersetGroup !== null
+            ? supersetIds[e.supersetGroup]
+            : undefined,
           sets: e.sets.map((s) => ({
             id: randomUUID(),
             type: "regular",
@@ -81,11 +94,13 @@ export default class NextRepLegacyAdapter implements WorkoutConverterAdapter {
             weight: s.weight ?? undefined,
             completed: s.completed,
             restTime: s.restTime ?? undefined,
-            distance: undefined
-          }))
-        }))
+            distance: undefined,
+          })),
+        })),
       })),
-      templates: parsed.workouts.filter((w) => w.isTemplate === true).map((w) => ({
+      templates: parsed.workouts.filter((w) => w.isTemplate === true).map((
+        w,
+      ) => ({
         id: randomUUID(),
         name: w.title,
         createdAt: w.createdAt,
@@ -93,16 +108,18 @@ export default class NextRepLegacyAdapter implements WorkoutConverterAdapter {
           id: randomUUID(),
           exerciseId: exerciseIds[e.exerciseName],
           notes: e.notes ?? undefined,
-          supersetId: e.supersetGroup !== null ? supersetIds[e.supersetGroup] : undefined,
+          supersetId: e.supersetGroup !== null
+            ? supersetIds[e.supersetGroup]
+            : undefined,
           sets: e.sets.map((s) => ({
             id: randomUUID(),
             type: "regular",
             defaultDuration: s.duration ?? undefined,
             defaultReps: s.reps ?? undefined,
             defaultWeight: s.weight ?? undefined,
-            restTime: s.restTime ?? undefined
-          }))
-        }))
+            restTime: s.restTime ?? undefined,
+          })),
+        })),
       })),
     };
 
@@ -115,7 +132,7 @@ export default class NextRepLegacyAdapter implements WorkoutConverterAdapter {
       appBuildNumber: "x",
       exportDate: new Date(),
       schemaVersion: SUPPORTED_SCHEMA.toString(),
-      workouts: []
+      workouts: [],
     };
 
     for (const template of data.templates) {
@@ -126,7 +143,9 @@ export default class NextRepLegacyAdapter implements WorkoutConverterAdapter {
         isTemplate: true,
         rpe: null,
         exercises: template.exercises.map((e) => ({
-          exerciseName: data.exercises.find((def) => def.id == e.exerciseId)?.name ?? "Unknown Exercise",
+          exerciseName: data.exercises.find((def) =>
+            def.id == e.exerciseId
+          )?.name ?? "Unknown Exercise",
           notes: e.notes ?? null,
           supersetGroup: e.supersetId ?? null,
           sets: e.sets.map((s) => ({
@@ -136,10 +155,10 @@ export default class NextRepLegacyAdapter implements WorkoutConverterAdapter {
             speed: null,
             resistanceLevel: null,
             restTime: s.restTime ?? null,
-            completed: false
-          }))
-        }))
-      })
+            completed: false,
+          })),
+        })),
+      });
     }
 
     for (const workout of data.workouts) {
@@ -150,7 +169,9 @@ export default class NextRepLegacyAdapter implements WorkoutConverterAdapter {
         isTemplate: false,
         rpe: workout.rpe ?? null,
         exercises: workout.exercises.map((e) => ({
-          exerciseName: data.exercises.find((def) => def.id == e.exerciseId)?.name ?? "Unknown Exercise",
+          exerciseName: data.exercises.find((def) =>
+            def.id == e.exerciseId
+          )?.name ?? "Unknown Exercise",
           notes: e.notes ?? null,
           supersetGroup: e.supersetId ?? null,
           sets: e.sets.map((s) => ({
@@ -160,12 +181,14 @@ export default class NextRepLegacyAdapter implements WorkoutConverterAdapter {
             speed: null,
             resistanceLevel: null,
             restTime: s.restTime ?? null,
-            completed: s.completed
+            completed: s.completed,
           })),
         })),
       });
     }
 
-    return Promise.resolve(new Blob([JSON.stringify(toExport)], { type: "application/json" }));
+    return Promise.resolve(
+      new Blob([JSON.stringify(toExport)], { type: "application/json" }),
+    );
   }
 }

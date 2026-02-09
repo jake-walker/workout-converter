@@ -4,10 +4,11 @@ import sampleData from "../sample_data/converted.ts";
 import { workoutData } from "../../src/schema.ts";
 import { normaliseUuids, readSampleFileAsBlob } from "../helpers.ts";
 
-
 Deno.test("HevyAdapter imports sample data correctly", async () => {
   const adapter = new HevyAdapter();
-  const data = normaliseUuids(await adapter.importWorkoutData(await readSampleFileAsBlob("hevy.csv")));
+  const data = normaliseUuids(
+    await adapter.importWorkoutData(await readSampleFileAsBlob("hevy.csv")),
+  );
 
   assertEquals(workoutData.safeParse(data).error, undefined);
 
@@ -15,9 +16,11 @@ Deno.test("HevyAdapter imports sample data correctly", async () => {
 
   sampleDataCopy.workouts.forEach((workout, workoutIndex) => {
     workout.exercises.forEach((exercise, exerciseIndex) => {
-      delete sampleDataCopy.workouts[workoutIndex].exercises[exerciseIndex].notes;
+      delete sampleDataCopy.workouts[workoutIndex].exercises[exerciseIndex]
+        .notes;
       exercise.sets.forEach((_set, setIndex) => {
-        delete sampleDataCopy.workouts[workoutIndex].exercises[exerciseIndex].sets[setIndex].restTime;
+        delete sampleDataCopy.workouts[workoutIndex].exercises[exerciseIndex]
+          .sets[setIndex].restTime;
       });
     });
   });
@@ -32,7 +35,7 @@ Deno.test("HevyAdapter exports sample data correctly", async () => {
   const expected = await readSampleFileAsBlob("hevy.csv");
 
   assertEquals(
-    (await data.text()).replaceAll("\"", ""),
-    (await expected.text()).replaceAll("\"", "")
+    (await data.text()).replaceAll('"', ""),
+    (await expected.text()).replaceAll('"', ""),
   );
 });

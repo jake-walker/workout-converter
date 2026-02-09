@@ -7,7 +7,9 @@ import { readSampleFileAsBlob } from "../helpers.ts";
 Deno.test("NextRepAdapter imports data correctly", async () => {
   const adapter = new NextRepAdapter();
 
-  const data = await adapter.importWorkoutData(await readSampleFileAsBlob("nextrep.json"));
+  const data = await adapter.importWorkoutData(
+    await readSampleFileAsBlob("nextrep.json"),
+  );
 
   assertEquals(workoutData.safeParse(data).error, undefined);
 
@@ -18,7 +20,8 @@ Deno.test("NextRepAdapter imports data correctly", async () => {
       delete sampleDataCopy.workouts[workoutIndex].rpe;
 
       exercise.sets.forEach((_set, setIndex) => {
-        delete sampleDataCopy.workouts[workoutIndex].exercises[exerciseIndex].sets[setIndex].notes;
+        delete sampleDataCopy.workouts[workoutIndex].exercises[exerciseIndex]
+          .sets[setIndex].notes;
       });
     });
   });

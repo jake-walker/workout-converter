@@ -7,7 +7,11 @@ import { normaliseUuids, readSampleFileAsBlob } from "../helpers.ts";
 Deno.test("NextRepLegacyAdapter imports data correctly", async () => {
   const adapter = new NextRepLegacyAdapter();
 
-  const data = normaliseUuids(await adapter.importWorkoutData(await readSampleFileAsBlob("nextrep_legacy.json")));
+  const data = normaliseUuids(
+    await adapter.importWorkoutData(
+      await readSampleFileAsBlob("nextrep_legacy.json"),
+    ),
+  );
 
   assertEquals(workoutData.safeParse(data).error, undefined);
 
@@ -16,7 +20,8 @@ Deno.test("NextRepLegacyAdapter imports data correctly", async () => {
   sampleDataCopy.workouts.forEach((workout, workoutIndex) => {
     workout.exercises.forEach((exercise, exerciseIndex) => {
       exercise.sets.forEach((_set, setIndex) => {
-        delete sampleDataCopy.workouts[workoutIndex].exercises[exerciseIndex].sets[setIndex].notes;
+        delete sampleDataCopy.workouts[workoutIndex].exercises[exerciseIndex]
+          .sets[setIndex].notes;
       });
     });
   });

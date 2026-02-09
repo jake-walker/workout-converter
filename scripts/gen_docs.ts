@@ -2,7 +2,7 @@ import { md } from "npm:mdbox@0.1.1";
 import { getAdapterInfo } from "../src/main.ts";
 import { automd, defineGenerator } from "npm:automd@0.4.0";
 
-Deno.mkdir("docs").catch((_) => { });
+Deno.mkdir("docs").catch((_) => {});
 
 const adapterTable = defineGenerator({
   name: "adapter-table",
@@ -10,14 +10,16 @@ const adapterTable = defineGenerator({
     return {
       contents: md.table({
         columns: ["Format", "Description"],
-        rows: getAdapterInfo().map((a) => [md.bold(md.link(a.website, a.title)), a.description])
-      })
-    }
-  }
+        rows: getAdapterInfo().map((
+          a,
+        ) => [md.bold(md.link(a.website, a.title)), a.description]),
+      }),
+    };
+  },
 });
 
 await automd({
   generators: {
-    "adapter-table": adapterTable
-  }
+    "adapter-table": adapterTable,
+  },
 });

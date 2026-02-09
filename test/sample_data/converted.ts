@@ -9,18 +9,18 @@ const sampleData: WorkoutDataType = {
     {
       id: "4ff8059e-91c0-4064-bff1-07468d4a4d07",
       name: "Test Exercise A",
-      exerciseType: "weightReps"
+      exerciseType: "weightReps",
     },
     {
       id: "3a561a27-2739-47d3-904b-981484ba5bc9",
       name: "Test Exercise B",
-      exerciseType: "weightReps"
+      exerciseType: "weightReps",
     },
     {
       id: "4ebf45c4-1222-4ad3-b5fd-34917371dd9f",
       name: "Test Exercise C",
-      exerciseType: "weightReps"
-    }
+      exerciseType: "weightReps",
+    },
   ],
   templates: [],
   workouts: [
@@ -47,7 +47,7 @@ const sampleData: WorkoutDataType = {
               notes: "Hello",
               restTime: 90,
               duration: undefined,
-              distance: undefined
+              distance: undefined,
             },
             {
               id: "263d4361-6198-445f-a15d-fbf6377ef114",
@@ -58,7 +58,7 @@ const sampleData: WorkoutDataType = {
               notes: "World",
               restTime: 90,
               duration: undefined,
-              distance: undefined
+              distance: undefined,
             },
             {
               id: "24275166-6d95-4489-bda9-09278b30afbe",
@@ -69,9 +69,9 @@ const sampleData: WorkoutDataType = {
               notes: "12345",
               restTime: 90,
               duration: undefined,
-              distance: undefined
-            }
-          ]
+              distance: undefined,
+            },
+          ],
         },
         {
           id: "14bfd017-dff7-4481-9a68-4c8e0ebd2190",
@@ -87,7 +87,7 @@ const sampleData: WorkoutDataType = {
               reps: 5,
               weight: 32.5,
               duration: undefined,
-              distance: undefined
+              distance: undefined,
             },
             {
               id: "dfe9465c-ddf6-4f5f-af4f-640fdb6ad036",
@@ -97,7 +97,7 @@ const sampleData: WorkoutDataType = {
               reps: 15,
               weight: 35.0,
               duration: undefined,
-              distance: undefined
+              distance: undefined,
             },
             {
               id: "b430ddf8-5517-484d-ae1e-db405fe5a530",
@@ -107,11 +107,11 @@ const sampleData: WorkoutDataType = {
               reps: 25,
               weight: 37.5,
               duration: undefined,
-              distance: undefined
-            }
-          ]
-        }
-      ]
+              distance: undefined,
+            },
+          ],
+        },
+      ],
     },
     {
       id: "678f5b05-318d-4236-9a40-71f503ce82ec",
@@ -135,7 +135,7 @@ const sampleData: WorkoutDataType = {
               weight: 25.0,
               duration: undefined,
               restTime: undefined,
-              distance: undefined
+              distance: undefined,
             },
             {
               id: "f4608a0e-3d17-43e4-9613-668d21dd851a",
@@ -145,7 +145,7 @@ const sampleData: WorkoutDataType = {
               weight: 27.5,
               duration: undefined,
               restTime: undefined,
-              distance: undefined
+              distance: undefined,
             },
             {
               id: "d7864425-b4a2-4765-a896-c490da9646a0",
@@ -155,9 +155,9 @@ const sampleData: WorkoutDataType = {
               weight: 30.0,
               duration: undefined,
               restTime: undefined,
-              distance: undefined
-            }
-          ]
+              distance: undefined,
+            },
+          ],
         },
         {
           id: "74bc13b3-2e0e-4912-b40b-79084ccca37c",
@@ -173,7 +173,7 @@ const sampleData: WorkoutDataType = {
               weight: 32.5,
               duration: undefined,
               restTime: undefined,
-              distance: undefined
+              distance: undefined,
             },
             {
               id: "7fca1b04-83ce-4f9d-9177-93d7870c0b3e",
@@ -183,7 +183,7 @@ const sampleData: WorkoutDataType = {
               weight: 35.0,
               duration: undefined,
               restTime: undefined,
-              distance: undefined
+              distance: undefined,
             },
             {
               id: "1c28b52a-032c-427c-bbd4-07d5a537d389",
@@ -193,13 +193,13 @@ const sampleData: WorkoutDataType = {
               weight: 37.5,
               duration: undefined,
               restTime: undefined,
-              distance: undefined
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              distance: undefined,
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };
 
 export default sampleData;

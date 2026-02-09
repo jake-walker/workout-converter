@@ -4,13 +4,13 @@ export type AdapterInfo = {
   title: string;
   description: string;
   website: string;
-}
+};
 
 export type ConversionFilter = {
   excludeOlderThanDays?: number;
   excludeTemplates?: boolean;
   excludeWorkouts?: boolean;
-}
+};
 
 const setType = z.enum(["warmup", "regular"]).default("warmup");
 
@@ -25,7 +25,9 @@ export const workoutData = z.object({
     id: z.guid(),
     name: z.string(),
     description: z.string().optional(),
-    exerciseType: z.enum(["weightReps", "timed", "cardio"]).default("weightReps")
+    exerciseType: z.enum(["weightReps", "timed", "cardio"]).default(
+      "weightReps",
+    ),
   })),
   templates: z.array(z.object({
     id: z.guid(),
@@ -43,9 +45,9 @@ export const workoutData = z.object({
         defaultDuration: z.number().int().optional(),
         defaultReps: z.number().int().optional(),
         defaultWeight: z.number().optional(),
-        restTime: z.number().int().optional()
-      }))
-    }))
+        restTime: z.number().int().optional(),
+      })),
+    })),
   })),
   workouts: z.array(z.object({
     id: z.guid(),
@@ -68,20 +70,20 @@ export const workoutData = z.object({
         reps: z.number().int().optional(),
         weight: z.number().optional(),
         restTime: z.number().int().optional(),
-        completed: z.boolean()
-      }))
-    }))
-  }))
+        completed: z.boolean(),
+      })),
+    })),
+  })),
 }).refine((schema) => {
   const allUsedExerciseIds = [
     ...schema.templates.flatMap((t) => t.exercises.map((e) => e.exerciseId)),
-    ...schema.workouts.flatMap((w) => w.exercises.map((e) => e.exerciseId))
+    ...schema.workouts.flatMap((w) => w.exercises.map((e) => e.exerciseId)),
   ];
   const definedExerciseIds = schema.exercises.map((e) => e.id);
 
   return allUsedExerciseIds.every((id) => definedExerciseIds.includes(id));
 }, {
-  message: "Exercises inside templates and/or workouts are not defined"
+  message: "Exercises inside templates and/or workouts are not defined",
 });
 
 export type WorkoutDataType = z.infer<typeof workoutData>;

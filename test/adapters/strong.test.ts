@@ -4,10 +4,11 @@ import sampleData from "../sample_data/converted.ts";
 import { workoutData } from "../../src/schema.ts";
 import { normaliseUuids, readSampleFileAsBlob } from "../helpers.ts";
 
-
 Deno.test("StrongAdapter imports sample data correctly", async () => {
   const adapter = new StrongAdapter();
-  const data = normaliseUuids(await adapter.importWorkoutData(await readSampleFileAsBlob("strong.csv")));
+  const data = normaliseUuids(
+    await adapter.importWorkoutData(await readSampleFileAsBlob("strong.csv")),
+  );
 
   assertEquals(workoutData.safeParse(data).error, undefined);
 
@@ -15,9 +16,11 @@ Deno.test("StrongAdapter imports sample data correctly", async () => {
 
   sampleDataCopy.workouts.forEach((workout, workoutIndex) => {
     workout.exercises.forEach((exercise, exerciseIndex) => {
-      delete sampleDataCopy.workouts[workoutIndex].exercises[exerciseIndex].notes;
+      delete sampleDataCopy.workouts[workoutIndex].exercises[exerciseIndex]
+        .notes;
       exercise.sets.forEach((_set, setIndex) => {
-        delete sampleDataCopy.workouts[workoutIndex].exercises[exerciseIndex].sets[setIndex].restTime;
+        delete sampleDataCopy.workouts[workoutIndex].exercises[exerciseIndex]
+          .sets[setIndex].restTime;
       });
     });
   });
@@ -31,5 +34,5 @@ Deno.test("StrongAdapter exports sample data correctly", async () => {
   const data = await adapter.exportWorkoutData(sampleData);
   const expected = await readSampleFileAsBlob("strong.csv");
 
-  assertEquals(await data.text(), (await expected.text()).replaceAll("\"", ""));
+  assertEquals(await data.text(), (await expected.text()).replaceAll('"', ""));
 });

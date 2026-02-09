@@ -3,10 +3,19 @@ import { copy } from "@std/fs";
 import * as path from "@std/path";
 
 await emptyDir("./npm");
-await copy("./test/sample_data", "./npm/script/test/sample_data", { overwrite: true });
-await copy("./test/sample_data", "./npm/esm/test/sample_data", { overwrite: true });
+await copy("./test/sample_data", "./npm/script/test/sample_data", {
+  overwrite: true,
+});
+await copy("./test/sample_data", "./npm/esm/test/sample_data", {
+  overwrite: true,
+});
 
-const versionFile = await Deno.readTextFile(path.join(path.dirname(path.fromFileUrl(import.meta.url)), "../.release-please-manifest.json"));
+const versionFile = await Deno.readTextFile(
+  path.join(
+    path.dirname(path.fromFileUrl(import.meta.url)),
+    "../.release-please-manifest.json",
+  ),
+);
 
 await build({
   entryPoints: ["./src/main.ts"],
@@ -29,17 +38,21 @@ await build({
     author: "Jake Walker <hi@jakew.me> (https://jakew.me)",
     repository: {
       type: "git",
-      url: "git+https://github.com/jake-walker/workout-converter"
+      url: "git+https://github.com/jake-walker/workout-converter",
     },
     bugs: {
       url: "https://github.com/jake-walker/workout-converter/issues",
-      email: "jake@nextrep.app"
-    }
+      email: "jake@nextrep.app",
+    },
   },
   postBuild() {
     Deno.copyFileSync("LICENSE", "npm/LICENSE");
     Deno.copyFileSync("README.md", "npm/README.md");
-  }
+  },
 });
 
-await Deno.writeTextFile("npm/.npmignore", "script/test/sample_data\nesm/test/sample_data", { append: true });
+await Deno.writeTextFile(
+  "npm/.npmignore",
+  "script/test/sample_data\nesm/test/sample_data",
+  { append: true },
+);

@@ -2,32 +2,39 @@ import { parse, stringify } from "@std/csv";
 import type WorkoutConverterAdapter from "../adapter.ts";
 import type { AdapterInfo, WorkoutDataType } from "../schema.ts";
 import parseDuration from "parse-duration";
-import { inferExerciseType, parseOptionalFloat, parseOptionalInt, randomUUID, uuidArray } from "../helpers.ts";
+import {
+  inferExerciseType,
+  parseOptionalFloat,
+  parseOptionalInt,
+  randomUUID,
+  uuidArray,
+} from "../helpers.ts";
 import { DateTime, Duration } from "ts-luxon";
 
 type StrongColumn =
-  "Date" |
-  "Workout Name" |
-  "Duration" |
-  "Exercise Name" |
-  "Set Order" |
-  "Weight" |
-  "Reps" |
-  "Distance" |
-  "Seconds" |
-  "Notes" |
-  "Workout Notes" |
-  "RPE";
+  | "Date"
+  | "Workout Name"
+  | "Duration"
+  | "Exercise Name"
+  | "Set Order"
+  | "Weight"
+  | "Reps"
+  | "Distance"
+  | "Seconds"
+  | "Notes"
+  | "Workout Notes"
+  | "RPE";
 
 const DATE_FORMAT = "yyyy-MM-dd h:mm:ss\u202fa";
 
 export default class StrongAdapter implements WorkoutConverterAdapter {
   getInfo(): AdapterInfo {
     return {
-      title: 'Strong',
-      description: 'Convert workout data to and from Strong\'s CSV format. Please note Strong does not support the export of templates, or importing data back into the app.',
-      website: 'https://strong.app',
-    }
+      title: "Strong",
+      description:
+        "Convert workout data to and from Strong's CSV format. Please note Strong does not support the export of templates, or importing data back into the app.",
+      website: "https://strong.app",
+    };
   }
 
   async importWorkoutData(data: Blob): Promise<WorkoutDataType> {
@@ -36,14 +43,24 @@ export default class StrongAdapter implements WorkoutConverterAdapter {
       strip: true,
     }) as Record<StrongColumn, string>[];
 
-    const allExercises = uuidArray(new Set(parsed.map((r) => r["Exercise Name"])));
-    const exerciseSetSample: { [id: string]: WorkoutDataType["workouts"][number]["exercises"][number]["sets"][number] } = {};
+    const allExercises = uuidArray(
+      new Set(parsed.map((r) => r["Exercise Name"])),
+    );
+    const exerciseSetSample: {
+      [id: string]:
+        WorkoutDataType["workouts"][number]["exercises"][number]["sets"][
+          number
+        ];
+    } = {};
 
-    const workouts: { [d: string]: WorkoutDataType['workouts'][number] } = {};
+    const workouts: { [d: string]: WorkoutDataType["workouts"][number] } = {};
 
     for (const row of parsed) {
       if (!(row["Date"] in workouts)) {
-        const startedAt = DateTime.fromFormat(row["Date"].toUpperCase(), DATE_FORMAT);
+        const startedAt = DateTime.fromFormat(
+          row["Date"].toUpperCase(),
+          DATE_FORMAT,
+        );
         const durationMs = parseDuration(row["Duration"]) ?? 0;
         const endedAt = startedAt.plus(Duration.fromMillis(durationMs));
 
@@ -55,23 +72,28 @@ export default class StrongAdapter implements WorkoutConverterAdapter {
           rpe: parseOptionalInt(row["RPE"]),
           notes: row["Workout Notes"] === "" ? undefined : row["Workout Notes"],
           exercises: [],
-        }
+        };
       }
 
       const exercises = workouts[row["Date"]].exercises;
       const exerciseId = allExercises[row["Exercise Name"]];
-      const exerciseIdx = exercises.findIndex((v) => v.exerciseId === exerciseId);
+      const exerciseIdx = exercises.findIndex((v) =>
+        v.exerciseId === exerciseId
+      );
 
-      const set: WorkoutDataType["workouts"][number]["exercises"][number]["sets"][number] = {
-        id: randomUUID(),
-        type: "regular",
-        completed: true,
-        notes: row["Notes"] === "" ? undefined : row["Notes"],
-        weight: parseOptionalFloat(row["Weight"], true),
-        reps: parseOptionalInt(row["Reps"], true),
-        distance: parseOptionalFloat(row["Distance"], true),
-        duration: parseOptionalInt(row["Seconds"], true),
-      }
+      const set:
+        WorkoutDataType["workouts"][number]["exercises"][number]["sets"][
+          number
+        ] = {
+          id: randomUUID(),
+          type: "regular",
+          completed: true,
+          notes: row["Notes"] === "" ? undefined : row["Notes"],
+          weight: parseOptionalFloat(row["Weight"], true),
+          reps: parseOptionalInt(row["Reps"], true),
+          distance: parseOptionalFloat(row["Distance"], true),
+          duration: parseOptionalInt(row["Seconds"], true),
+        };
 
       if (!(exerciseId in exerciseSetSample)) {
         exerciseSetSample[exerciseId] = set;
@@ -82,7 +104,7 @@ export default class StrongAdapter implements WorkoutConverterAdapter {
           id: randomUUID(),
           exerciseId,
           supersetId: undefined,
-          sets: [set]
+          sets: [set],
         });
       } else {
         exercises[exerciseIdx].sets.push(set);
@@ -92,27 +114,36 @@ export default class StrongAdapter implements WorkoutConverterAdapter {
     return {
       metadata: {
         name: `${this.getInfo().title} Import`,
-        notes: `Imported ${parsed.length} rows`
+        notes: `Imported ${parsed.length} rows`,
       },
-      exercises: Object.entries(allExercises).map(([exerciseName, exerciseId]) => ({
+      exercises: Object.entries(allExercises).map((
+        [exerciseName, exerciseId],
+      ) => ({
         id: exerciseId,
         name: exerciseName,
-        exerciseType: exerciseId in exerciseSetSample ? inferExerciseType(exerciseSetSample[exerciseId]) : "weightReps"
+        exerciseType: exerciseId in exerciseSetSample
+          ? inferExerciseType(exerciseSetSample[exerciseId])
+          : "weightReps",
       })),
       templates: [],
       workouts: Object.values(workouts),
-    }
+    };
   }
 
   exportWorkoutData(data: WorkoutDataType): Promise<Blob> {
     const rows: Record<StrongColumn, string>[] = [];
 
     for (const workout of data.workouts) {
-      const formattedDate = DateTime.fromJSDate(workout.startedAt).toFormat(DATE_FORMAT);
-      const duration = (workout.endedAt ?? workout.startedAt).getTime() - workout.startedAt.getTime();
+      const formattedDate = DateTime.fromJSDate(workout.startedAt).toFormat(
+        DATE_FORMAT,
+      );
+      const duration = (workout.endedAt ?? workout.startedAt).getTime() -
+        workout.startedAt.getTime();
 
       for (const exercise of workout.exercises) {
-        const exerciseName = data.exercises.find((e) => e.id === exercise.exerciseId)?.name ?? "Unknown Exercise";
+        const exerciseName = data.exercises.find((e) =>
+          e.id === exercise.exerciseId
+        )?.name ?? "Unknown Exercise";
 
         for (const [index, set] of exercise.sets.entries()) {
           rows.push({
@@ -128,7 +159,7 @@ export default class StrongAdapter implements WorkoutConverterAdapter {
             Notes: set.notes || "",
             "Workout Notes": workout.notes || "",
             RPE: workout.rpe?.toString() || "",
-          })
+          });
         }
       }
     }
@@ -147,10 +178,12 @@ export default class StrongAdapter implements WorkoutConverterAdapter {
         "Seconds",
         "Notes",
         "Workout Notes",
-        "RPE"
+        "RPE",
       ],
     });
 
-    return Promise.resolve(new Blob([csv.replaceAll("\r\n", "\n")], { type: "text/csv" }));
+    return Promise.resolve(
+      new Blob([csv.replaceAll("\r\n", "\n")], { type: "text/csv" }),
+    );
   }
 }

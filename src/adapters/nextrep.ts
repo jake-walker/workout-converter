@@ -1,7 +1,11 @@
 import type WorkoutConverterAdapter from "../adapter.ts";
 import { fractionalSecondsReplacer } from "../helpers.ts";
 import type { AdapterInfo, WorkoutDataType } from "../schema.ts";
-import { NextRepExportSchema, type NextRepExport, type MeasurementType } from "./nextrep_schema.g.ts";
+import {
+  type MeasurementType,
+  type NextRepExport,
+  NextRepExportSchema,
+} from "./nextrep_schema.g.ts";
 
 const SUPPORTED_SCHEMA = 1;
 
@@ -9,33 +13,38 @@ export default class NextRepAdapter implements WorkoutConverterAdapter {
   getInfo(): AdapterInfo {
     return {
       title: "NextRep",
-      description: "Convert workout and template data to and from NextRep's JSON format.",
+      description:
+        "Convert workout and template data to and from NextRep's JSON format.",
       website: "https://nextrep.app",
-    }
+    };
   }
 
-  private convertExportMeasurementType(val: MeasurementType | undefined): WorkoutDataType["exercises"][number]["exerciseType"] {
+  private convertExportMeasurementType(
+    val: MeasurementType | undefined,
+  ): WorkoutDataType["exercises"][number]["exerciseType"] {
     if (val === "weightReps" || val === undefined) {
-      return "weightReps"
+      return "weightReps";
     } else if (val === "distance") {
-      return "cardio"
+      return "cardio";
     } else if (val === "time") {
-      return "timed"
+      return "timed";
     }
 
-    throw new Error(`Failed to convert from measurement type \"${val}\"`)
+    throw new Error(`Failed to convert from measurement type \"${val}\"`);
   }
 
-  private convertInternalMeasurementType(val: WorkoutDataType["exercises"][number]["exerciseType"]): MeasurementType {
+  private convertInternalMeasurementType(
+    val: WorkoutDataType["exercises"][number]["exerciseType"],
+  ): MeasurementType {
     if (val === "weightReps") {
-      return "weightReps"
+      return "weightReps";
     } else if (val === "cardio") {
-      return "distance"
+      return "distance";
     } else if (val === "timed") {
-      return "time"
+      return "time";
     }
 
-    throw new Error(`Failed to convert from measurement type \"${val}\"`)
+    throw new Error(`Failed to convert from measurement type \"${val}\"`);
   }
 
   async importWorkoutData(data: Blob): Promise<WorkoutDataType> {
@@ -44,7 +53,8 @@ export default class NextRepAdapter implements WorkoutConverterAdapter {
     return {
       metadata: {
         name: `${this.getInfo().title} Import`,
-        notes: `From NextRep ${parsed.meta.nrVersion}+${parsed.meta.nrBuildNumber} (${parsed.meta.nrSchemaVersion}). Contains ${parsed.workouts.length} workouts.`
+        notes:
+          `From NextRep ${parsed.meta.nrVersion}+${parsed.meta.nrBuildNumber} (${parsed.meta.nrSchemaVersion}). Contains ${parsed.workouts.length} workouts.`,
       },
       exercises: parsed.exercises.map((e) => ({
         id: e.id,
@@ -71,9 +81,9 @@ export default class NextRepAdapter implements WorkoutConverterAdapter {
             reps: s.reps,
             weight: s.weight,
             restTime: s.restTime,
-            completed: s.completed
-          }))
-        }))
+            completed: s.completed,
+          })),
+        })),
       })),
       templates: parsed.templates.map((t) => ({
         id: t.id,
@@ -91,11 +101,11 @@ export default class NextRepAdapter implements WorkoutConverterAdapter {
             defaultDuration: s.duration,
             defaultReps: s.reps,
             defaultWeight: s.weight,
-            restTime: s.restTime
-          }))
-        }))
+            restTime: s.restTime,
+          })),
+        })),
       })),
-    }
+    };
   }
 
   exportWorkoutData(data: WorkoutDataType): Promise<Blob> {
@@ -104,13 +114,13 @@ export default class NextRepAdapter implements WorkoutConverterAdapter {
         exportDate: new Date(),
         nrBuildNumber: "x",
         nrSchemaVersion: SUPPORTED_SCHEMA,
-        nrVersion: "x.x.x"
+        nrVersion: "x.x.x",
       },
       exercises: data.exercises.map((e) => ({
         id: e.id,
         name: e.name,
         description: e.description,
-        measurementType: this.convertInternalMeasurementType(e.exerciseType)
+        measurementType: this.convertInternalMeasurementType(e.exerciseType),
       })),
       templates: data.templates.map((t) => ({
         id: t.id,
@@ -128,9 +138,9 @@ export default class NextRepAdapter implements WorkoutConverterAdapter {
             duration: s.defaultDuration,
             reps: s.defaultReps,
             weight: s.defaultWeight,
-            restTime: s.restTime
-          }))
-        }))
+            restTime: s.restTime,
+          })),
+        })),
       })),
       workouts: data.workouts.map((w) => ({
         id: w.id,
@@ -151,12 +161,16 @@ export default class NextRepAdapter implements WorkoutConverterAdapter {
             reps: s.reps,
             weight: s.weight,
             restTime: s.restTime,
-            completed: s.completed
-          }))
-        }))
-      }))
+            completed: s.completed,
+          })),
+        })),
+      })),
     };
 
-    return Promise.resolve(new Blob([JSON.stringify(toExport, fractionalSecondsReplacer)], { type: "application/json" }));
+    return Promise.resolve(
+      new Blob([JSON.stringify(toExport, fractionalSecondsReplacer)], {
+        type: "application/json",
+      }),
+    );
   }
 }

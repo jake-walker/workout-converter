@@ -2,7 +2,12 @@ import { DateTime } from "ts-luxon";
 import type WorkoutConverterAdapter from "./adapter.ts";
 import NextRepAdapter from "./adapters/nextrep.ts";
 import StrongAdapter from "./adapters/strong.ts";
-import { workoutData, type AdapterInfo, type ConversionFilter, type WorkoutDataType } from "./schema.ts";
+import {
+  type AdapterInfo,
+  type ConversionFilter,
+  workoutData,
+  type WorkoutDataType,
+} from "./schema.ts";
 import NextRepLegacyAdapter from "./adapters/nextrep_legacy.ts";
 import HevyAdapter from "./adapters/hevy.ts";
 
@@ -35,7 +40,9 @@ export function getAdapterInfo(): AdapterInfo[] {
  * @returns {WorkoutConverterAdapter | null} Returns an instance of the adapter.
  */
 export function getAdapterByName(name: string): WorkoutConverterAdapter | null {
-  return adapters.find((a) => a.getInfo().title.toLowerCase() == name.toLowerCase()) ?? null;
+  return adapters.find((a) =>
+    a.getInfo().title.toLowerCase() == name.toLowerCase()
+  ) ?? null;
 }
 
 /**
@@ -48,12 +55,23 @@ export function getAdapterByName(name: string): WorkoutConverterAdapter | null {
  * @param {ConversionFilter} filters - Filters that are applied after data is imported, and before it is exported.
  * @returns {Blob} Returns the converted data as a blob.
  */
-export async function convertData(input: Blob, fromAdapter: WorkoutConverterAdapter, toAdapter: WorkoutConverterAdapter, filters?: ConversionFilter): Promise<Blob> {
-  const intermediate = workoutData.parse(await fromAdapter.importWorkoutData(input));
+export async function convertData(
+  input: Blob,
+  fromAdapter: WorkoutConverterAdapter,
+  toAdapter: WorkoutConverterAdapter,
+  filters?: ConversionFilter,
+): Promise<Blob> {
+  const intermediate = workoutData.parse(
+    await fromAdapter.importWorkoutData(input),
+  );
 
   if (filters?.excludeOlderThanDays && filters.excludeOlderThanDays > 0) {
-    const excludeBefore = DateTime.now().minus({ days: filters.excludeOlderThanDays }).toJSDate();
-    intermediate.workouts = intermediate.workouts.filter((w) => w.startedAt >= excludeBefore);
+    const excludeBefore = DateTime.now().minus({
+      days: filters.excludeOlderThanDays,
+    }).toJSDate();
+    intermediate.workouts = intermediate.workouts.filter((w) =>
+      w.startedAt >= excludeBefore
+    );
   }
 
   if (filters?.excludeTemplates === true) {
