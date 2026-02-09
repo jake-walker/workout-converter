@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.0](https://github.com/jake-walker/workout-converter/compare/v2.1.0...v2.2.0) (2026-02-09)
+
+
+### Features
+
+* **hevy:** hevy conversion ([6099686](https://github.com/jake-walker/workout-converter/commit/609968665de1ef50870ca7906f1478a373441cc2))
+* **nextrep:** update schema ([b556c98](https://github.com/jake-walker/workout-converter/commit/b556c98ed85508e557b8ac907047779a4d145320))
+
 ## [2.1.0](https://github.com/jake-walker/workout-converter/compare/v2.0.0...v2.1.0) (2025-10-23)
 
 
