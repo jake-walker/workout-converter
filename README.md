@@ -9,6 +9,8 @@
 
 A TypeScript library for converting strength training workout data between different apps and formats.
 
+If you are looking to use the tool, you can use it [here](https://nextrep.app/convert/) - all the conversion happens in your browser locally.
+
 ## Formats
 
 The following apps/formats are supported:
@@ -39,13 +41,13 @@ npm install @jakew/workout-converter
 yarn add @jakew/workout-converter
 
 # pnpm
-pnpm install @jakew/workout-converter
+pnpm add @jakew/workout-converter
 
 # bun
 bun install @jakew/workout-converter
 
 # deno
-deno install @jakew/workout-converter
+deno install npm:@jakew/workout-converter
 ```
 
 <!-- /automd -->
@@ -56,23 +58,26 @@ The premise is there are "adapters" for each app or format. When converting betw
 
 Use the `getAdapterInfo()` function to get a list of available adapters and descriptions. Then use the `convertData()` function to perform data conversion between two different formats.
 
-<!-- automd:jsimport imports="getAdapterInfo,convertData" cjs -->
+<!-- automd:jsimport imports="getAdapterInfo,convertData" name="@jakew/workout-converter" cdn -->
 
 **ESM** (Node.js, Bun, Deno)
 
 ```js
-import { getAdapterInfo, convertData } from "undefined";
+import { getAdapterInfo, convertData } from "@jakew/workout-converter";
 ```
 
-**CommonJS** (Legacy Node.js)
+**CDN** (Deno and Browsers)
 
 ```js
-const { getAdapterInfo, convertData } = require("undefined");
+import {
+  getAdapterInfo,
+  convertData,
+} from "https://esm.sh/@jakew/workout-converter";
 ```
 
 <!-- /automd -->
 
-**Conversion Example**
+**Usage Example**
 
 ```js
 // Convert from a Strong CSV to a NextRep JSON

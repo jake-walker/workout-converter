@@ -1,6 +1,7 @@
+// deno-lint-ignore-file no-import-prefix
 import { md } from "npm:mdbox@0.1.1";
 import { getAdapterInfo } from "../src/main.ts";
-import { automd, defineGenerator } from "npm:automd@0.4.0";
+import { automd, defineGenerator } from "npm:automd@0.4.3";
 
 Deno.mkdir("docs").catch((_) => {});
 
