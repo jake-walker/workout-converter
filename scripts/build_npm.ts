@@ -21,7 +21,15 @@ const versionFile = await Deno.readTextFile(
 );
 
 await build({
-  entryPoints: ["./src/main.ts"],
+  configFile: import.meta.resolve("../deno.json"),
+  entryPoints: [
+    "./src/main.ts",
+    {
+      kind: "bin",
+      name: "workout-converter",
+      path: "./src/main.ts",
+    },
+  ],
   outDir: "./npm",
   rootTestDir: "./test",
   testPattern: "**/*.test.ts",
