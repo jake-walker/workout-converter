@@ -20,6 +20,7 @@ The following apps/formats are supported:
 | **[NextRep](https://nextrep.app)** | Convert workout and template data to and from NextRep's JSON format. |
 | **[NextRep (v1)](https://nextrep.app)** | Convert workout and template data to and from the format used for version 1 of the NextRep app. |
 | **[Strong](https://strong.app)** | Convert workout data to and from Strong's CSV format. Please note Strong does not support the export of templates, or importing data back into the app. |
+| **[Hevy](https://www.hevyapp.com/)** | Convert workout data to and from Hevy's CSV format. Please note Hevy does not support the export of templates, or importing data back into the app. |
 
 <!-- /automd -->
 
