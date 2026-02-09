@@ -6,3 +6,8 @@ repos:
         language: system
         entry: deno run -A scripts/gen_docs.ts
         pass_filenames: false
+      - id: deno-fmt
+        name: deno fmt
+        language: system
+        entry: deno fmt
+        pass_filenames: false

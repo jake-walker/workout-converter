@@ -22,5 +22,11 @@
         "no-slow-types"
       ]
     }
+  },
+  "fmt": {
+    "exclude": [
+      "README.md",
+      "CHANGELOG.md"
+    ]
   }
 }
