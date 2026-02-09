@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/jake-walker/workout-converter/compare/v2.2.0...v2.3.0) (2026-02-09)
+
+
+### Features
+
+* npm bin entrypoint ([5a446b6](https://github.com/jake-walker/workout-converter/commit/5a446b6956670ecc629cb7ab59fc595a2deaaafa))
+
 ## [2.2.0](https://github.com/jake-walker/workout-converter/compare/v2.1.0...v2.2.0) (2026-02-09)
 
 
